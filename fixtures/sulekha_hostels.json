@@ -1,0 +1,153 @@
+{
+  "collector_id": "c_hostel_sulekha_01",
+  "source_url": "https://www.sulekha.com/hostels/lucknow/womens-hostels",
+  "source_domain": "sulekha.com",
+  "category": "women_hostel",
+  "scraped_at": "2026-08-20T11:00:00Z",
+  "records": [
+    {
+      "name": "Maitreyi Women's Residence & PG",
+      "city": "Lucknow",
+      "locality": "Gomti Nagar",
+      "address": "B-4/88, Vibhuti Khand, Near Hyatt Regency, Gomti Nagar, Lucknow 226010",
+      "latitude": 26.8682,
+      "longitude": 80.9984,
+      "contact": "+91-98390-12345",
+      "attributes": {
+        "monthly_price": {
+          "raw_value": "Rs. 9,500 / month onwards (Twin Sharing)",
+          "normalized_value": 9500,
+          "evidence_text": "Twin sharing air-conditioned room at Rs. 9,500 per month inclusive of electricity up to 100 units and 3 daily meals."
+        },
+        "deposit_amount": {
+          "raw_value": "One month rent advance",
+          "normalized_value": 9500,
+          "evidence_text": "Security deposit equal to one month advance rent refundable upon notice."
+        },
+        "women_only": {
+          "raw_value": "Girls only accommodation",
+          "normalized_value": true,
+          "evidence_text": "Exclusively for female university students and working professionals."
+        },
+        "curfew_time": {
+          "raw_value": "10:00 PM",
+          "normalized_value": "22:00",
+          "evidence_text": "Gate closing time: 10:00 PM every night with biometric attendance logging."
+        },
+        "facilities": {
+          "raw_value": "AC, Wi-Fi, Food, Biometric Access, Study Tables, RO Water",
+          "normalized_value": ["ac", "wifi", "meals_included", "biometric", "study_desk", "ro_water"],
+          "evidence_text": "Facilities provided: Fully furnished rooms with study desk, AC, high-speed Wi-Fi, biometric entry, home cooked meals."
+        }
+      }
+    },
+    {
+      "name": "Gargi Ladies Hostel",
+      "city": "Lucknow",
+      "locality": "Indira Nagar",
+      "address": "Sector 14, Ring Road, Near Munshi Pulia Metro Station, Indira Nagar, Lucknow 226016",
+      "latitude": 26.8834,
+      "longitude": 80.9856,
+      "contact": "+91-94151-99881",
+      "attributes": {
+        "monthly_price": {
+          "raw_value": "Rs. 7,800 - 10,500 / mo",
+          "normalized_value": 7800,
+          "evidence_text": "Triple sharing at Rs. 7,800/mo, Double at Rs. 9,000/mo, Single at Rs. 10,500/mo with mess."
+        },
+        "deposit_amount": {
+          "raw_value": "Rs. 3,000",
+          "normalized_value": 3000,
+          "evidence_text": "Refundable security deposit is Rs. 3,000."
+        },
+        "women_only": {
+          "raw_value": "Strictly Girls Hostel",
+          "normalized_value": true,
+          "evidence_text": "Strictly women-only premises with 24-hr security guard."
+        },
+        "curfew_time": {
+          "raw_value": "9:00 PM (Winter) / 9:30 PM (Summer)",
+          "normalized_value": "21:00",
+          "evidence_text": "Curfew: 9:00 PM during winters and 9:30 PM in summers."
+        },
+        "facilities": {
+          "raw_value": "Wi-Fi, Meals, CCTV, Inverter Backup, Water Cooler",
+          "normalized_value": ["wifi", "meals_included", "cctv", "power_backup", "water_cooler"],
+          "evidence_text": "Includes high speed internet, 3 meals + evening tea, inverter power backup."
+        }
+      }
+    },
+    {
+      "name": "Pratibha Girls Hostel & PG",
+      "city": "Lucknow",
+      "locality": "Jankipuram",
+      "address": "Sector F, Near Lucknow University New Campus, Jankipuram, Lucknow 226021",
+      "latitude": 26.9152,
+      "longitude": 80.9421,
+      "contact": "+91-91981-44332",
+      "attributes": {
+        "monthly_price": {
+          "raw_value": "Rs. 6,500 / month (Triple sharing) to 8,500 (Double sharing)",
+          "normalized_value": 6500,
+          "evidence_text": "Budget student PG starting from Rs. 6,500 per month including breakfast, lunch, and dinner."
+        },
+        "deposit_amount": {
+          "raw_value": "Rs. 2,000",
+          "normalized_value": 2000,
+          "evidence_text": "Security deposit Rs. 2,000 refundable."
+        },
+        "women_only": {
+          "raw_value": "Only for Girls / Female Students",
+          "normalized_value": true,
+          "evidence_text": "Only female students enrolled in Lucknow University or coaching institutes."
+        },
+        "curfew_time": {
+          "raw_value": "8:30 PM",
+          "normalized_value": "20:30",
+          "evidence_text": "Hostel main gates locked at 8:30 PM."
+        },
+        "facilities": {
+          "raw_value": "Mess Food, Wi-Fi, CCTV, 24x7 Water Supply, Study Room",
+          "normalized_value": ["meals_included", "wifi", "cctv", "study_desk"],
+          "evidence_text": "Mess facility, study tables, quiet study room, CCTV, Wi-Fi."
+        }
+      }
+    },
+    {
+      "name": "Avadh Queen's PG for Women",
+      "city": "Lucknow",
+      "locality": "Alambagh",
+      "address": "Near Alambagh Metro Station & Bus Terminal, Chander Nagar, Alambagh, Lucknow 226005",
+      "latitude": 26.8123,
+      "longitude": 80.9015,
+      "contact": "+91-97210-55441",
+      "attributes": {
+        "monthly_price": {
+          "raw_value": "Rs. 11,500 / month (Single Occupancy AC)",
+          "normalized_value": 11500,
+          "evidence_text": "Premium single room with attached bath and AC at Rs. 11,500/month."
+        },
+        "deposit_amount": {
+          "raw_value": "Rs. 5,000",
+          "normalized_value": 5000,
+          "evidence_text": "Deposit of Rs. 5,000 required."
+        },
+        "women_only": {
+          "raw_value": "Women Only",
+          "normalized_value": true,
+          "evidence_text": "All-women hostel staffed by female caretakers."
+        },
+        "curfew_time": {
+          "raw_value": "10:30 PM for working women with ID",
+          "normalized_value": "22:30",
+          "evidence_text": "Flexible curfew of 10:30 PM for verified working professionals."
+        },
+        "facilities": {
+          "raw_value": "AC, Attached Bath, Wi-Fi, Food, Fridge, Washing Machine, Lift",
+          "normalized_value": ["ac", "attached_bath", "wifi", "meals_included", "laundry", "lift"],
+          "evidence_text": "Furnished with AC, refrigerator, washing machine, lift, 3 meals a day."
+        }
+      }
+    }
+  ]
+}

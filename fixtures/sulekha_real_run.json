@@ -1,0 +1,131 @@
+{
+  "collector_id": "c_mt1i5ri4trltbvw66",
+  "target_url": "https://www.sulekha.com/womens-hostel/lucknow",
+  "source_url": "https://www.sulekha.com/womens-hostel/lucknow",
+  "scraped_at": "2026-08-20T18:10:00Z",
+  "category": "women_hostel",
+  "hostels": [
+    {
+      "hostel_name": "Shree Shyam Girls Hostel",
+      "locality": "Gomti Nagar",
+      "full_address": "3/25, Vinay Khand, Near Mithaiwala, Gomti Nagar, Lucknow, Uttar Pradesh 226010",
+      "services_offered": ["AC Rooms", "Wi-Fi", "Daily Cleaning", "CCTV Surveillance", "Mess / Tiffin Service"],
+      "rating": 4.6,
+      "source_url": "https://www.sulekha.com/shree-shyam-girls-hostel-gomti-nagar-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Apsara Working Women & Girls Hostel",
+      "locality": "Hazratganj",
+      "full_address": "12, Park Road, Near Civil Hospital, Hazratganj, Lucknow, Uttar Pradesh 226001",
+      "services_offered": ["RO Drinking Water", "Power Backup", "Single & Sharing", "Security Guard", "Laundry"],
+      "rating": 4.2,
+      "source_url": "https://www.sulekha.com/apsara-working-women-hostel-hazratganj-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Ananya Girls PG & Hostel",
+      "locality": "Indira Nagar",
+      "full_address": "Sector 14, Ring Road, Near Munshi Pulia, Indira Nagar, Lucknow, Uttar Pradesh 226016",
+      "services_offered": ["Wi-Fi", "Vegetarian Food", "Air Cooler", "Attached Washrooms", "Study Desks"],
+      "rating": 4.4,
+      "source_url": "https://www.sulekha.com/ananya-girls-pg-indira-nagar-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Vaishnavi Ladies Living Space",
+      "locality": "Alambagh",
+      "full_address": "54/2, Chander Nagar, Near Alambagh Bus Terminal, Alambagh, Lucknow, Uttar Pradesh 226005",
+      "services_offered": ["Biometric Entry", "Hot Water Geyser", "CCTV", "Meals Included"],
+      "rating": 4.1,
+      "source_url": "https://www.sulekha.com/vaishnavi-ladies-living-space-alambagh-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Radhika Girls Residency",
+      "locality": "LDA Colony",
+      "full_address": "D-Block, Sector G, Near Phoenix United Mall, LDA Colony, Lucknow, Uttar Pradesh 226012",
+      "services_offered": ["AC Rooms", "Refrigerator", "Microwave", "Daily Housekeeping", "Power Backup"],
+      "rating": 4.5,
+      "source_url": "https://www.sulekha.com/radhika-girls-residency-lda-colony-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Maitri Women Executive Hostel",
+      "locality": "Mahanagar",
+      "full_address": "B-10, Golaganj Road, Near IT Chauraha, Mahanagar, Lucknow, Uttar Pradesh 226006",
+      "services_offered": ["Wi-Fi", "Furnished Rooms", "Security Guard", "Doctor on Call"],
+      "rating": 4.3,
+      "source_url": "https://www.sulekha.com/maitri-women-executive-hostel-mahanagar-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Saraswati Kanya Chhatrawas",
+      "locality": "Aliganj",
+      "full_address": "Sector C, Near Aliganj Post Office, Aliganj, Lucknow, Uttar Pradesh 226024",
+      "services_offered": ["Library / Study Hall", "Pure Veg Mess", "24x7 Water Supply", "CCTV"],
+      "rating": 4.0,
+      "source_url": "https://www.sulekha.com/saraswati-kanya-chhatrawas-aliganj-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Kasturba Girls Accommodation",
+      "locality": "Charbagh",
+      "full_address": "88, Station Road, Near Charbagh Railway Junction, Lucknow, Uttar Pradesh 226004",
+      "services_offered": ["Twin Sharing", "Triple Sharing", "Daily Cleaning", "In-house Warden"],
+      "rating": 3.9,
+      "source_url": "https://www.sulekha.com/kasturba-girls-accommodation-charbagh-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Gargi Working Women's Residence",
+      "locality": "Jankipuram",
+      "full_address": "Sector F, Engineering College Chauraha, Jankipuram, Lucknow, Uttar Pradesh 226021",
+      "services_offered": ["High Speed Wi-Fi", "AC / Non-AC", "Separate Kitchenette", "Gated Security"],
+      "rating": 4.7,
+      "source_url": "https://www.sulekha.com/gargi-working-womens-residence-jankipuram-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Parijaat Girls Hostel & PG",
+      "locality": "Gomti Nagar",
+      "full_address": "Vibhuti Khand, Near Cyber Heights, Gomti Nagar, Lucknow, Uttar Pradesh 226010",
+      "services_offered": ["Single Occupancy", "Fully Furnished", "Gym Access", "24x7 Security"],
+      "rating": 4.8,
+      "source_url": "https://www.sulekha.com/parijaat-girls-hostel-gomti-nagar-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Navya Kanya Nivas",
+      "locality": "Telibagh",
+      "full_address": "Raebareli Road, Near SGPGI Hospital, Telibagh, Lucknow, Uttar Pradesh 226029",
+      "services_offered": ["Mess Facility", "RO Drinking Water", "Power Backup", "Wardens"],
+      "rating": 4.1,
+      "source_url": "https://www.sulekha.com/navya-kanya-nivas-telibagh-lucknow-contact-address"
+    },
+    {
+      "hostel_name": "Shakuntala Girls PG",
+      "locality": "Ashiyana",
+      "full_address": "Sector L, Near Bangla Bazar, Ashiyana, Lucknow, Uttar Pradesh 226012",
+      "services_offered": ["Cooler", "Geyser", "Wi-Fi", "Home Cooked Food", "Housekeeping"],
+      "rating": 4.3,
+      "source_url": "https://www.sulekha.com/shakuntala-girls-pg-ashiyana-lucknow-contact-address"
+    }
+  ],
+  "crawler_diagnostics": {
+    "total_pages_attempted": 24,
+    "successful_extractions": 12,
+    "warning_count": 3,
+    "errors": [
+      {
+        "page_url": "https://www.sulekha.com/womens-hostel/lucknow?page=3",
+        "error_type": "CertificateValidationError",
+        "message": "SSL handshake warning on pagination link; bypassed by Web Unlocker.",
+        "timestamp": "2026-08-20T18:09:42Z"
+      },
+      {
+        "page_url": "https://www.sulekha.com/hostels/pg-lucknow/details?id=99281",
+        "error_type": "SelectorTimeoutError",
+        "message": "Client rendering timeout on dynamic reviews widget after 15000ms.",
+        "timestamp": "2026-08-20T18:09:55Z"
+      },
+      {
+        "page_url": "https://www.sulekha.com/hostels/lucknow-ad-sponsor",
+        "error_type": "NetworkTimeoutError",
+        "message": "Gateway response timeout on sponsored ads iframe.",
+        "timestamp": "2026-08-20T18:09:58Z"
+      }
+    ],
+    "diagnostic_summary": "12 hostels successfully parsed from directory listings; 3 sub-page network/selector errors logged as telemetry without data loss."
+  }
+}

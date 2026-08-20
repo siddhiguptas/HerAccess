@@ -1,0 +1,87 @@
+{
+  "collector_id": "c_pharmacy_jd_01",
+  "source_url": "https://www.justdial.com/Lucknow/24-Hours-Chemists",
+  "source_domain": "justdial.com",
+  "category": "pharmacy",
+  "scraped_at": "2026-08-20T11:45:00Z",
+  "records": [
+    {
+      "name": "Apollo 24x7 Pharmacy - Hazratganj",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Shop 4, Mayfair Building, Hazratganj Market, Lucknow 226001",
+      "latitude": 26.8522,
+      "longitude": 80.9449,
+      "contact": "+91-522-4045566",
+      "attributes": {
+        "timings": {
+          "raw_value": "Open 24 Hours / 7 Days a Week",
+          "normalized_value": "24x7",
+          "evidence_text": "Store operates 24 hours daily with night counter service and verified pharmacists on duty."
+        },
+        "home_delivery": {
+          "raw_value": "Instant Home Delivery in 2 Hours",
+          "normalized_value": true,
+          "evidence_text": "Express door delivery available for urgent medications and feminine hygiene supplies across Central Lucknow."
+        },
+        "essential_supplies": {
+          "raw_value": "All Prescription Medicines, Sanitary & Personal Care, First Aid, Emergency Contraceptive",
+          "normalized_value": ["prescription_drugs", "feminine_hygiene", "first_aid", "emergency_medicines"],
+          "evidence_text": "Fully stocked inventory of all schedule H/H1 drugs, sanitary pads, heating patches, and emergency medical kits."
+        }
+      }
+    },
+    {
+      "name": "Sanjivani 24-Hour Medical Store - Gomti Nagar",
+      "city": "Lucknow",
+      "locality": "Gomti Nagar",
+      "address": "Near Dr. RML Hospital Gate 2, Vibhuti Khand, Gomti Nagar, Lucknow 226010",
+      "latitude": 26.8648,
+      "longitude": 80.9989,
+      "contact": "+91-98380-77665",
+      "attributes": {
+        "timings": {
+          "raw_value": "Open 24 Hours Daily",
+          "normalized_value": "24x7",
+          "evidence_text": "24-hour retail pharmacy directly adjacent to RML Hospital emergency gate."
+        },
+        "home_delivery": {
+          "raw_value": "Available in Gomti Nagar & Indira Nagar",
+          "normalized_value": true,
+          "evidence_text": "Call or WhatsApp for home delivery within 5 km radius."
+        },
+        "essential_supplies": {
+          "raw_value": "Life Saving Drugs, Injections, Surgical Supplies, Women Care",
+          "normalized_value": ["life_saving_drugs", "surgical_items", "feminine_hygiene"],
+          "evidence_text": "Stockist for super-specialty medications, surgical disposables, and daily hygiene necessities."
+        }
+      }
+    },
+    {
+      "name": "MedPlus Pharmacy - Munshi Pulia",
+      "city": "Lucknow",
+      "locality": "Indira Nagar",
+      "address": "Shop 12, Sector 16 Market, Munshi Pulia, Indira Nagar, Lucknow 226016",
+      "latitude": 26.8839,
+      "longitude": 80.9868,
+      "contact": "+91-522-2354900",
+      "attributes": {
+        "timings": {
+          "raw_value": "07:00 AM to 11:30 PM (Night counter till midnight)",
+          "normalized_value": "07:00-23:30",
+          "evidence_text": "Store hours: 7:00 AM to 11:30 PM every day."
+        },
+        "home_delivery": {
+          "raw_value": "Free Home Delivery above ₹500",
+          "normalized_value": true,
+          "evidence_text": "Free delivery on orders above Rs. 500 in Indira Nagar locality."
+        },
+        "essential_supplies": {
+          "raw_value": "Prescription, OTC, Diagnostics, Wellness",
+          "normalized_value": ["prescription_drugs", "otc", "wellness", "feminine_hygiene"],
+          "evidence_text": "Genuine medicines with flat 20% discount on generic alternatives."
+        }
+      }
+    }
+  ]
+}

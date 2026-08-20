@@ -1,0 +1,33 @@
+{
+  "collector_id": "c_mt1fujyq16vhxxfg7x",
+  "target_url": "https://kgmu.org/",
+  "source_url": "https://kgmu.org/",
+  "scraped_at": "2026-08-20T11:37:17Z",
+  "category": "hospital",
+  "records": [
+    {
+      "hospital_name": "King George's Medical University (KGMU)",
+      "address": "417/22, Chowk, Lucknow, Uttar Pradesh 226003, India",
+      "locality": "Chowk",
+      "city": "Lucknow",
+      "latitude": 26.8696,
+      "longitude": 80.9163,
+      "emergency_24x7": true,
+      "public_government": true,
+      "key_departments": [
+        "Trauma Centre & Emergency Medicine",
+        "Obstetrics & Gynaecology (Queen Mary Hospital)",
+        "General Medicine",
+        "Paediatrics",
+        "Cardiology",
+        "General Surgery"
+      ],
+      "contact_phone": [
+        "+919453004209",
+        "05222258880",
+        "05223539333"
+      ],
+      "source_url": "https://kgmu.org/hospital_opd.php"
+    }
+  ]
+}

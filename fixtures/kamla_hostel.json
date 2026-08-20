@@ -1,0 +1,70 @@
+{
+  "collector_id": "c_mt1f0ke713h6n32pi4",
+  "source_url": "https://kamlagirlshostel.com/",
+  "source_domain": "kamlagirlshostel.com",
+  "category": "women_hostel",
+  "scraped_at": "2026-08-20T11:15:00Z",
+  "records": [
+    {
+      "hostel_name": "Best Hostel for Girls in Lucknow (Kamla Girls Hostel)",
+      "address": "B1/4, Kanpur Rd, Sector D, LDA Colony, Lucknow, Uttar Pradesh 226012",
+      "locality": "LDA Colony",
+      "latitude": 26.7930,
+      "longitude": 80.8970,
+      "room_types": [
+        {
+          "accommodation_type": "Single Person",
+          "room_features": "AC & Non AC Rooms",
+          "monthly_rent": {
+            "value": 12000,
+            "currency": "INR",
+            "symbol": "₹"
+          }
+        },
+        {
+          "accommodation_type": "Twin Sharing",
+          "room_features": "AC & Non AC Rooms",
+          "monthly_rent": {
+            "value": 10000,
+            "currency": "INR",
+            "symbol": "₹"
+          }
+        },
+        {
+          "accommodation_type": "Triple Sharing",
+          "room_features": "AC & Non AC Rooms",
+          "monthly_rent": {
+            "value": 10000,
+            "currency": "INR",
+            "symbol": "₹"
+          }
+        }
+      ],
+      "meal_details": "Fooding facility is compulsory.",
+      "women_only": true,
+      "curfew_timings": "9:30-10:00 pm",
+      "contact_numbers": [
+        "+91 8400005555",
+        "9452129219"
+      ],
+      "facilities": [
+        "Washing machine facility for washing clothes.",
+        "Microwave Facility Available for light cooking.",
+        "Television for entertainment & bed, mattress, bed sheet, pillow etc..",
+        "Refrigerator, Microwave facility available.",
+        "Wi-Fi facility for internet.",
+        "Kent RO for drinking water. Facility of bucket, mug.",
+        "Power backup & First Aid facility.",
+        "Daily cleaning facility.",
+        "Listening or playing any kind of loud music or talking loudly on mobile is strictly prohibited.",
+        "The entry of any male other than Gaurdian inside the hostel is completely prohibited.",
+        "Hostel gate will be closed between 9:30-10:00 pm. This has to be taken care of.",
+        "In case of not staying in the hostel, going home, leaving the hostel for any work or going on leave, the full amount of the hostel will have to be paid. No discount of any kind will be given in the fare.",
+        "On leaving the Girls Hostel, going out or going home, the Warden will have to be informed first.",
+        "Eating, bringing or boiling non-veg or eggs etc. is not allowed in the hostel. This Girls Hostel is completely Vegetarian."
+      ],
+      "source_url": "https://kamlagirlshostel.com/"
+    }
+  ]
+}
+

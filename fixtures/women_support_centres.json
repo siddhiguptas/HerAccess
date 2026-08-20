@@ -1,0 +1,82 @@
+{
+  "collector_id": "c_women_osc_01",
+  "source_url": "https://wcd.nic.in/schemes/one-stop-centre-scheme/lucknow-directory",
+  "source_domain": "wcd.nic.in",
+  "category": "women_support",
+  "scraped_at": "2026-08-20T08:30:00Z",
+  "records": [
+    {
+      "name": "One Stop Centre (Sakhi) - Lucknow District Center",
+      "city": "Lucknow",
+      "locality": "Alambagh",
+      "address": "Lok Bandhu Combined Hospital Campus, Kanpur Road Yojna, Sector D, Alambagh, Lucknow 226012",
+      "latitude": 26.7945,
+      "longitude": 80.8988,
+      "contact": "+91-72350-04513 / Helpline: 181",
+      "attributes": {
+        "organization_type": {
+          "raw_value": "Government Integrated Support Centre for Women (Ministry of WCD)",
+          "normalized_value": "government_one_stop_centre",
+          "evidence_text": "Established under the Nirbhaya Fund to provide integrated support including medical, legal, psychological, and temporary shelter."
+        },
+        "services_offered": {
+          "raw_value": "Emergency Medical Aid, Legal Counseling, Police Assistance, Psychological Counseling, 5-Day Temporary Shelter",
+          "normalized_value": ["medical_aid", "legal_counseling", "police_assistance", "psycho_social_counseling", "temporary_shelter"],
+          "evidence_text": "Free 24x7 crisis intervention and temporary shelter for up to 5 days with full board for women in distress."
+        },
+        "helpline_numbers": {
+          "raw_value": "Women Helpline: 181, Centre Mobile: 7235004513, Email: lkodpo34@gmail.com",
+          "normalized_value": ["181", "+91-72350-04513"],
+          "evidence_text": "Toll-free 181 helpline operational 24 hours a day with direct routing to Lucknow Sakhi Centre."
+        }
+      }
+    },
+    {
+      "name": "UP 1090 Women Power Line Headquarters",
+      "city": "Lucknow",
+      "locality": "Gomti Nagar",
+      "address": "1090 Chauraha, VIP Road, Gomti Nagar, Lucknow 226010",
+      "latitude": 26.8533,
+      "longitude": 80.9712,
+      "contact": "Toll-Free 1090 / +91-522-2721090",
+      "attributes": {
+        "organization_type": {
+          "raw_value": "Statewide Women Security & Anti-Harassment Specialized Police Command",
+          "normalized_value": "state_helpline_command",
+          "evidence_text": "Apex state facility handling telephone, digital, and social media harassment complaints with absolute caller anonymity."
+        },
+        "services_offered": {
+          "raw_value": "Cyber Bullying Redressal, Anonymous Harassment Resolution, Psychological Support, Legal Guidance",
+          "normalized_value": ["anonymous_reporting", "cyber_harassment_resolution", "counseling"],
+          "evidence_text": "Complaints are resolved without requiring the woman to visit a police station or disclose her identity publicly."
+        },
+        "helpline_numbers": {
+          "raw_value": "1090 (Toll-Free 24x7)",
+          "normalized_value": ["1090"],
+          "evidence_text": "Dial 1090 from any phone across Uttar Pradesh."
+        }
+      }
+    },
+    {
+      "name": "Uttar Pradesh State Commission for Women",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Navchetna Kendra, 10 Ashok Marg, Hazratganj, Lucknow 226001",
+      "latitude": 26.8541,
+      "longitude": 80.9472,
+      "contact": "+91-522-2288001 / +91-522-2288002",
+      "attributes": {
+        "organization_type": {
+          "raw_value": "Statutory State Human Rights & Women Welfare Commission",
+          "normalized_value": "statutory_commission",
+          "evidence_text": "Statutory body investigating grievances relating to women rights violations and facilitating legal aid."
+        },
+        "services_offered": {
+          "raw_value": "Legal Aid Clinic, Public Hearing (Mahila Jan-Sunwai), Inquiry & Mediation",
+          "normalized_value": ["free_legal_aid", "mediation", "grievance_redressal"],
+          "evidence_text": "Conducts regular grievance redressal benches with free legal representation for women."
+        }
+      }
+    }
+  ]
+}

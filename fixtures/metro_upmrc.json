@@ -1,0 +1,102 @@
+{
+  "collector_id": "c_metro_upmrc_01",
+  "source_url": "https://www.upmetrorail.com/lucknow-metro/station-timings-and-fares",
+  "source_domain": "upmetrorail.com",
+  "category": "public_transport",
+  "scraped_at": "2026-08-20T08:00:00Z",
+  "records": [
+    {
+      "name": "Hazratganj Metro Station (Red Line)",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Mahatma Gandhi Marg, Hazratganj, Lucknow 226001",
+      "latitude": 26.8519,
+      "longitude": 80.9428,
+      "contact": "+91-522-2288866",
+      "attributes": {
+        "operator": {
+          "raw_value": "Uttar Pradesh Metro Rail Corporation (UPMRC)",
+          "normalized_value": "UPMRC",
+          "evidence_text": "Operated and maintained by UPMRC under Lucknow Metro Red Line corridor."
+        },
+        "service_type": {
+          "raw_value": "Rapid Metro Rail",
+          "normalized_value": "metro",
+          "evidence_text": "High-frequency urban rapid transit line connecting CCS Airport to Munshi Pulia."
+        },
+        "timings": {
+          "raw_value": "First Train: 06:00 AM | Last Train: 10:00 PM (Daily)",
+          "normalized_value": "06:00-22:00",
+          "evidence_text": "Commercial train operations commence at 06:00 hrs and conclude at 22:00 hrs with 5.5-minute peak headway."
+        },
+        "womens_coach_facility": {
+          "raw_value": "Dedicated Women's Section & Reserved Seats in all coaches",
+          "normalized_value": true,
+          "evidence_text": "Front section of all trains dedicated for women commuters, monitored by CCTV and armed security personnel."
+        },
+        "fare_range": {
+          "raw_value": "₹10 to ₹60 depending on station distance",
+          "normalized_value": {"min": 10, "max": 60},
+          "evidence_text": "Standard token fare from Rs. 10 to Rs. 60; 10% discount on GoSmart cards."
+        }
+      }
+    },
+    {
+      "name": "Munshi Pulia Metro Station (Red Line Terminal)",
+      "city": "Lucknow",
+      "locality": "Indira Nagar",
+      "address": "Munshi Pulia Crossing, Ring Road, Indira Nagar, Lucknow 226016",
+      "latitude": 26.8845,
+      "longitude": 80.9882,
+      "contact": "+91-522-2288867",
+      "attributes": {
+        "operator": {
+          "raw_value": "UPMRC",
+          "normalized_value": "UPMRC",
+          "evidence_text": "Terminal station on the North-South corridor of Lucknow Metro."
+        },
+        "service_type": {
+          "raw_value": "Metro Terminal & Feeder Bus Point",
+          "normalized_value": "metro",
+          "evidence_text": "Terminal station with connecting e-bus and auto-rickshaw feeder services."
+        },
+        "timings": {
+          "raw_value": "06:00 AM to 10:00 PM",
+          "normalized_value": "06:00-22:00",
+          "evidence_text": "Station gates open at 05:45 AM, last departure to Airport at 22:00 PM."
+        },
+        "womens_coach_facility": {
+          "raw_value": "Women Priority Seating & Helpdesk",
+          "normalized_value": true,
+          "evidence_text": "Customer care helpdesk at concourse level with special assistance for women travelers."
+        }
+      }
+    },
+    {
+      "name": "Alambagh Bus Terminal & Metro Intermodal Hub",
+      "city": "Lucknow",
+      "locality": "Alambagh",
+      "address": "Kanpur Road, Alambagh, Lucknow 226005",
+      "latitude": 26.8118,
+      "longitude": 80.9032,
+      "contact": "+91-522-2451444",
+      "attributes": {
+        "operator": {
+          "raw_value": "UPMRC & UPSRTC Intermodal",
+          "normalized_value": "UPMRC/UPSRTC",
+          "evidence_text": "Integrated transit terminal connecting Lucknow Metro with interstate & city bus services."
+        },
+        "service_type": {
+          "raw_value": "Metro & Interstate Bus Depot",
+          "normalized_value": "multimodal_transit",
+          "evidence_text": "Direct air-conditioned skywalk connecting Alambagh Metro Station to ISBT Bus Terminal."
+        },
+        "timings": {
+          "raw_value": "24x7 Bus Terminal / 06:00-22:00 Metro",
+          "normalized_value": "24x7_buses",
+          "evidence_text": "UPSRTC buses operate 24x7; Metro operational 06:00 to 22:00."
+        }
+      }
+    }
+  ]
+}

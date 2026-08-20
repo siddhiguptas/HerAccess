@@ -1,0 +1,82 @@
+{
+  "collector_id": "c_police_up_01",
+  "source_url": "https://uppolice.gov.in/lucknow/police-stations-directory",
+  "source_domain": "uppolice.gov.in",
+  "category": "police_or_public_support",
+  "scraped_at": "2026-08-20T07:45:00Z",
+  "records": [
+    {
+      "name": "Hazratganj Police Station & Women Help Desk",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Park Road, Opposite Civil Hospital, Hazratganj, Lucknow 226001",
+      "latitude": 26.8492,
+      "longitude": 80.9458,
+      "contact": "+91-522-2287233 / 112",
+      "attributes": {
+        "station_type": {
+          "raw_value": "District Circle Police Station with Dedicated Women Help Desk",
+          "normalized_value": "police_station_with_women_desk",
+          "evidence_text": "24x7 operational police station equipped with Mission Shakti Women Help Desk managed by lady sub-inspectors."
+        },
+        "emergency_contact": {
+          "raw_value": "112 (Police Emergency) / 1090 (Women Power Line)",
+          "normalized_value": "112",
+          "evidence_text": "Instant dispatch via dial 112 emergency response vehicle (PRV) within 8 minutes average response time."
+        },
+        "facilities": {
+          "raw_value": "Private Counseling Room, Lady Sub-Inspector on Duty 24x7, CCTV Monitored Desk",
+          "normalized_value": ["private_counseling", "lady_officer_24x7", "cctv"],
+          "evidence_text": "Confidential counseling booth for female complainants and zero-FIR registration facility."
+        }
+      }
+    },
+    {
+      "name": "Gomti Nagar Police Station",
+      "city": "Lucknow",
+      "locality": "Gomti Nagar",
+      "address": "Vipul Khand, Near Manoj Pandey Chauraha, Gomti Nagar, Lucknow 226010",
+      "latitude": 26.8576,
+      "longitude": 80.9925,
+      "contact": "+91-522-2305544 / 112",
+      "attributes": {
+        "station_type": {
+          "raw_value": "Sub-Divisional Police Station with Women Safety Cell",
+          "normalized_value": "police_station_with_women_desk",
+          "evidence_text": "Comprehensive police station covering Gomti Nagar and Vibhuti Khand academic & tech zones."
+        },
+        "emergency_contact": {
+          "raw_value": "112 / SHO: +91-94544-03822",
+          "normalized_value": "112",
+          "evidence_text": "Direct SHO contact and PRV patrolling coverage."
+        },
+        "facilities": {
+          "raw_value": "Mission Shakti Desk, Female Constables, Automated Complaint Tracker",
+          "normalized_value": ["mission_shakti_desk", "female_officers", "cctv"],
+          "evidence_text": "Active Mahila Beat officers visiting local women's hostels and colleges regularly."
+        }
+      }
+    },
+    {
+      "name": "Ghazipur Police Station (Indira Nagar Circle)",
+      "city": "Lucknow",
+      "locality": "Indira Nagar",
+      "address": "Sector 14, Ring Road, Near Munshi Pulia, Indira Nagar, Lucknow 226016",
+      "latitude": 26.8828,
+      "longitude": 80.9845,
+      "contact": "+91-522-2350100 / 112",
+      "attributes": {
+        "station_type": {
+          "raw_value": "Local Circle Police Station",
+          "normalized_value": "police_station",
+          "evidence_text": "Jurisdiction encompasses Munshi Pulia, Sector 14, 16, and surrounding student housing colonies."
+        },
+        "emergency_contact": {
+          "raw_value": "112",
+          "normalized_value": "112",
+          "evidence_text": "Emergency police dispatch dial 112."
+        }
+      }
+    }
+  ]
+}

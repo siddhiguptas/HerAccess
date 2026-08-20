@@ -1,0 +1,157 @@
+[
+  {
+    "stations": [
+      {
+        "station_name": "CCS International Airport",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": true,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Amausi",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Transport Nagar",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Krishna Nagar",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Singar Nagar",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Alambagh",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Alambagh ISBT",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Mawaiya",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Durgapuri",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Lucknow Charbagh Railway Station",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": true
+      },
+      {
+        "station_name": "Hussainganj",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Sachivalaya",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Hazratganj",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "KD Singh Babu Stadium",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Vishwavidyalaya",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "IT College",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Badshahnagar",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Lekhraj Market",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Bhootnath Market",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Indira Nagar",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": false,
+        "is_interchange": false
+      },
+      {
+        "station_name": "Munshi Pulia",
+        "line": "Red Line",
+        "station_status": "Operational",
+        "is_terminal": true,
+        "is_interchange": false
+      }
+    ],
+    "product_page_url": "https://en.wikipedia.org/wiki/Lucknow_Metro",
+    "input": {
+      "url": "https://en.wikipedia.org/wiki/Lucknow_Metro"
+    }
+  }
+]

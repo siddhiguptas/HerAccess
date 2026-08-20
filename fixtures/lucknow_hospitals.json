@@ -1,0 +1,123 @@
+{
+  "collector_id": "c_hospital_district_01",
+  "source_url": "https://lucknow.nic.in/health/public-hospitals",
+  "source_domain": "lucknow.nic.in",
+  "category": "hospital",
+  "scraped_at": "2026-08-20T09:30:00Z",
+  "records": [
+    {
+      "name": "Dr. Shyama Prasad Mukherjee (Civil) Hospital",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Park Road, Near Raj Bhavan, Hazratganj, Lucknow 226001",
+      "latitude": 26.8486,
+      "longitude": 80.9452,
+      "contact": "+91-522-2239088",
+      "attributes": {
+        "hospital_type": {
+          "raw_value": "Government District Hospital (Tertiary)",
+          "normalized_value": "government",
+          "evidence_text": "A 400-bed premier state government hospital providing 24-hour multi-specialty care."
+        },
+        "emergency_services": {
+          "raw_value": "24x7 Emergency, Trauma, & Critical Care",
+          "normalized_value": true,
+          "evidence_text": "Round-the-clock emergency casualty with dedicated emergency medical officers and on-call specialists."
+        },
+        "departments": {
+          "raw_value": "Gynaecology & Obstetrics, General Medicine, Surgery, Orthopaedics, Cardiology, Ophthalmology",
+          "normalized_value": ["gynaecology", "obstetrics", "general_medicine", "surgery", "cardiology", "orthopaedics"],
+          "evidence_text": "Key departments include dedicated Women & Child Care unit, Obstetrics and Gynaecology, Medicine, General Surgery."
+        },
+        "free_treatment_schemes": {
+          "raw_value": "Ayushman Bharat PM-JAY & State Free OPD/IPD",
+          "normalized_value": true,
+          "evidence_text": "Fully covered under Ayushman Bharat PM-JAY and National Health Mission schemes with free generic medicine dispensary."
+        }
+      }
+    },
+    {
+      "name": "Dr. Ram Manohar Lohia Institute of Medical Sciences (RMLIMS)",
+      "city": "Lucknow",
+      "locality": "Gomti Nagar",
+      "address": "Vibhuti Khand, Gomti Nagar, Lucknow 226010",
+      "latitude": 26.8654,
+      "longitude": 80.9995,
+      "contact": "+91-522-6692000",
+      "attributes": {
+        "hospital_type": {
+          "raw_value": "Autonomous State Super-Specialty Medical Institute",
+          "normalized_value": "government_autonomous",
+          "evidence_text": "Autonomous state university hospital with comprehensive super-specialty faculties."
+        },
+        "emergency_services": {
+          "raw_value": "24/7 Super-Specialty Emergency & ICU",
+          "normalized_value": true,
+          "evidence_text": "24-hour emergency casualty block with modern ventilator beds and triage facility."
+        },
+        "departments": {
+          "raw_value": "Obstetrics & Gynaecology, Cardiology, Neurology, Gastroenterology, Oncology, Nephrology",
+          "normalized_value": ["obstetrics", "gynaecology", "cardiology", "neurology", "oncology"],
+          "evidence_text": "Comprehensive women health center with high-risk pregnancy management and gynecological oncology."
+        },
+        "free_treatment_schemes": {
+          "raw_value": "Ayushman Bharat PM-JAY Empanelled",
+          "normalized_value": true,
+          "evidence_text": "Empanelled under Ayushman Bharat PM-JAY, CGHS, and state medical relief funds."
+        }
+      }
+    },
+    {
+      "name": "Veerangana Jhalkari Bai Mahila Hospital",
+      "city": "Lucknow",
+      "locality": "Hazratganj",
+      "address": "Opposite General Post Office, Hazratganj, Lucknow 226001",
+      "latitude": 26.8505,
+      "longitude": 80.9412,
+      "contact": "+91-522-2287232",
+      "attributes": {
+        "hospital_type": {
+          "raw_value": "Dedicated Government Women's Hospital (Maternal & Child)",
+          "normalized_value": "government_women_specialty",
+          "evidence_text": "State government hospital dedicated exclusively to female patients, maternal health, and gynecology."
+        },
+        "emergency_services": {
+          "raw_value": "24x7 Women Emergency & Delivery Care",
+          "normalized_value": true,
+          "evidence_text": "Round-the-clock emergency labour ward, neonatal ICU, and female emergency surgery."
+        },
+        "departments": {
+          "raw_value": "Gynaecology, Obstetrics, Family Welfare, Neonatology, Female Wellness",
+          "normalized_value": ["gynaecology", "obstetrics", "family_welfare", "neonatology"],
+          "evidence_text": "Staffed with female gynecologists, lady medical officers, and specialized midwives."
+        }
+      }
+    },
+    {
+      "name": "Lok Bandhu Rajnarayan Combined Hospital",
+      "city": "Lucknow",
+      "locality": "Alambagh",
+      "address": "AKJ LDA Scheme, Kanpur Road, Near Shaheed Path, Lucknow 226012",
+      "latitude": 26.7942,
+      "longitude": 80.8991,
+      "contact": "+91-522-2431005",
+      "attributes": {
+        "hospital_type": {
+          "raw_value": "Government Combined Hospital",
+          "normalized_value": "government",
+          "evidence_text": "300-bed government hospital serving South Lucknow and Kanpur Road corridor."
+        },
+        "emergency_services": {
+          "raw_value": "24x7 Emergency & Trauma",
+          "normalized_value": true,
+          "evidence_text": "24-hour emergency casualty and blood bank facility."
+        },
+        "departments": {
+          "raw_value": "Gynaecology, Pediatrics, General Medicine, Ortho, Ophthalmology",
+          "normalized_value": ["gynaecology", "pediatrics", "general_medicine", "ortho"],
+          "evidence_text": "Full-fledged maternal and female health ward with 24-hour female medical officer on duty."
+        }
+      }
+    }
+  ]
+}
