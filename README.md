@@ -85,15 +85,22 @@ Live telemetry across all registered collectors: run history, record counts, val
 
 ## 3. Registered Bright Data Collectors
 
-| Category | Source Domain | Collector ID | Status | Provenance Level |
+| Collector ID | Name | Category | Source Domain | Data Status |
 |---|---|---|---|---|
-| Women's Hostel (Direct) | `https://kamlagirlshostel.com/` | `c_mt1f0ke713h6n32pi4` | LIVE REAL DATA | Direct Primary Source (High) |
-| Women's Hostel (Directory) | `https://www.sulekha.com/womens-hostel/lucknow` | `c_mt1i5ri4trltbvw66` | LIVE REAL DATA | Directory Listing (Medium) |
-| Healthcare / Hospitals | `https://kgmu.org/` | `c_mt1fujyq16vhxxfg7x` | LIVE REAL DATA | Direct University Hospital (High) |
-| Public Transport | `https://www.upmetrorail.com/` | `c_mt1ftf047f6ulzznq` | Fixture Fallback | Public Transit Authority |
-| 24x7 Pharmacy | `https://www.apollopharmacy.in/` | `c_mt1fuw0q54wsjtyfq` | Fixture Fallback | Pharmacy Directory |
-| Women Support / Police | `https://1090up.in/` | `c_mt1fv0wlyfkwe8z5y` | Fixture Fallback | State Helpline and Support |
-| Self-Healing Target | `https://www.kamlagirlshostel.com/` | `c_mt1f0ke713h6n32pi4` | REAL HEAL TARGET | Direct Provider |
+| `c_mt1f0ke713h6n32pi4` | Kamla Girls Hostel Extractor | Women's Hostel | `kamlagirlshostel.com` | Live real data / Self-heal target |
+| `c_mt1i5ri4trltbvw66` | Sulekha Lucknow Women Hostels | Women's Hostel (Directory) | `sulekha.com` | Live real data |
+| `c_mt1ftf047f6ulzznq` | UPMRC Lucknow Metro Network | Public Transport | `upmetrorail.com` | Fixture fallback |
+| `c_mt1fujyq16vhxxfg7x` | KGMU and District Public Healthcare | Hospital | `kgmu.org` | Live real data |
+| `c_mt1fuw0q54wsjtyfq` | Apollo Pharmacy 24x7 Chemists | Pharmacy | `apollopharmacy.in` | Fixture fallback |
+| `c_mt1fv0wlyfkwe8z5y` | UP Police Women Power Line 1090 and Sakhi OSC | Women Support | `1090up.in` | Registered real collector |
+| `c_police_up_01` | UP Police Women Help Desks and Thana Network | Police / Public Support | `uppolice.gov.in` | Registered real collector |
+| `c_mt1nlu1w3pkwb2h1i` | Lucknow Metro Operational Stations | Public Transport | `en.wikipedia.org/wiki/Lucknow_Metro` | Live real data |
+| `c_mt1ogapv1t1nhs5rht` | Apollo Hospitals Lucknow 24x7 Emergency | Hospital | `apollohospitals.com` | Live real data |
+| `c_mt1palv71amwtj4yp4` | University of Lucknow Women's Hostels | Women's Hostel | `lkouniv.ac.in` | Live real data |
+| `c_mt1qwsbmqm9fi1vu6` | UP Mahila Kalyan Women Support and Helplines | Women Support | `mahilakalyan.up.nic.in` | Live real data |
+| `c_hostel_sulekha_01` | Sulekha Demo Self-Healing Target | Women's Hostel | `sulekha.com` | Demo target only (not real) |
+
+Collectors marked "Fixture fallback" run against the Bright Data CLI but fall back to a local JSON fixture when the live endpoint returns no data. Collectors marked "Demo target only" are used exclusively for the controlled failure/heal demonstration and do not feed production data.
 
 ---
 
