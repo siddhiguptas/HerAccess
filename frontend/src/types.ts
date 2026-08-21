@@ -81,6 +81,9 @@ export interface ResourceDetail {
 export interface ParsedIntent {
   city: string;
   target_location?: string;
+  location_type?: string;
+  location_resolved?: boolean;
+  raw_location?: string;
   user_type: string;
   budget_max?: number;
   distance_max_km: number;

@@ -3,6 +3,7 @@ from backend.models.database import init_db, SessionLocal
 from backend.models.schemas import ParsedIntent
 from backend.models.enums import ResourceCategory
 from backend.services.matching_engine import MatchingEngine
+from backend.services.intent_parser import IntentParser
 from backend.ingestion.collector_runner import CollectorRunner
 from backend.ingestion.result_parser import ResultParser
 
@@ -121,7 +122,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
     from backend.models.database import Resource
     db = SessionLocal()
     try:
-        origin_lat, origin_lon = 26.8528, 80.9463
+        origin_lat, origin_lon = 26.8000, 80.9000
+        test_lat, test_lon = 26.8000, 80.9000
         
         # Test 1: Hospital shift
         test_clinic = Resource(
@@ -130,8 +132,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
             city="Lucknow",
             locality="Hazratganj",
             address="Hazratganj, Lucknow",
-            latitude=26.8529,
-            longitude=80.9464,
+            latitude=test_lat,
+            longitude=test_lon,
             is_active=True
         )
         db.add(test_clinic)
@@ -150,8 +152,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
             city="Lucknow",
             locality="Hazratganj",
             address="Hazratganj, Lucknow",
-            latitude=26.8529,
-            longitude=80.9464,
+            latitude=test_lat,
+            longitude=test_lon,
             is_active=True
         )
         db.add(test_metro)
@@ -170,8 +172,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
             city="Lucknow",
             locality="Hazratganj",
             address="Hazratganj, Lucknow",
-            latitude=26.8529,
-            longitude=80.9464,
+            latitude=test_lat,
+            longitude=test_lon,
             is_active=True
         )
         db.add(test_pharm)
@@ -190,8 +192,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
             city="Lucknow",
             locality="Hazratganj",
             address="Hazratganj, Lucknow",
-            latitude=26.8529,
-            longitude=80.9464,
+            latitude=test_lat,
+            longitude=test_lon,
             is_active=True
         )
         db.add(test_police)
@@ -210,8 +212,8 @@ def test_dynamic_support_chain_recalculation_on_db_change():
             city="Lucknow",
             locality="Hazratganj",
             address="Hazratganj, Lucknow",
-            latitude=26.8529,
-            longitude=80.9464,
+            latitude=test_lat,
+            longitude=test_lon,
             is_active=True
         )
         db.add(test_support)
@@ -313,4 +315,94 @@ def test_dynamic_search_queries_matrix():
         assert res6.total_found > 0
     finally:
         db.close()
+
+def test_bhoothnath_and_dynamic_search_regression():
+    """
+    Forensic regression test for natural-language search:
+    1. Query 'Student near Bhoothnath market in Lucknow. Need safe budget hostel under ₹8,000 with meals included.'
+       - target_location must resolve to 'Bhootnath Market' (NOT Hazratganj/Gomti Nagar)
+       - budget_max must be 8000.0 (NOT 12000.0)
+       - meals_included must be True
+       - distances must be genuine Haversine distances (NO candidate displays 0.0 km unless at exact coordinates)
+       - candidates with price > ₹8,000 must be filtered out
+    2. Changing query to Indira Nagar changes target_location
+    3. Changing budget from ₹8,000 to ₹12,000 changes candidate count/matches
+    """
+    db = SessionLocal()
+    try:
+        # 1. Bhoothnath ₹8k with meals
+        q_bhoot = "Student near Bhoothnath market in Lucknow. Need safe budget hostel under ₹8,000 with meals included."
+        intent_bhoot = IntentParser.parse_query(q_bhoot)
+        assert intent_bhoot.target_location == "Bhoothnath Market"
+        assert intent_bhoot.budget_max == 8000.0
+        assert intent_bhoot.preferences.get("meals_included") is True
+
+        res_bhoot = MatchingEngine.execute_search(db, intent_bhoot)
+        assert res_bhoot.total_found > 0
+        assert res_bhoot.intent.target_location == "Bhoothnath Market"
+        assert res_bhoot.intent.budget_max == 8000.0
+
+        # Verify no candidate with price > 8000 is included
+        for r in res_bhoot.primary_results:
+            for a in r.attributes:
+                if a.field_name == "monthly_price" and a.normalized_value:
+                    assert float(a.normalized_value) <= 8000.0
+
+            # Verify no false 0.0 km distance for distant candidates (e.g. Jankipuram / Hazratganj)
+            if r.locality in ["Jankipuram", "Hazratganj", "Alambagh", "LDA Colony"]:
+                assert r.distance_km > 3.0
+
+        # 2. Changing query to Indira Nagar changes target
+        q_indira = "women's hostel in Indira Nagar"
+        intent_indira = IntentParser.parse_query(q_indira)
+        assert intent_indira.target_location == "Indira Nagar"
+        assert intent_indira.target_location != intent_bhoot.target_location
+
+        # 3. Changing budget from 8k to 12k expands matches
+        q_12k = "Student near Bhoothnath market in Lucknow. Need safe budget hostel under ₹12,000."
+        intent_12k = IntentParser.parse_query(q_12k)
+        assert intent_12k.budget_max == 12000.0
+        res_12k = MatchingEngine.execute_search(db, intent_12k)
+        assert res_12k.total_found >= res_bhoot.total_found
+    finally:
+        db.close()
+
+
+def test_comprehensive_dynamic_location_matrix():
+    """
+    Validates generalized dynamic location extraction across minimum required 15+ locations,
+    spelling variations, landmark types, and unmapped non-hallucinating handling.
+    """
+    matrix = [
+        ("hostel near Bhoothnath Market in Lucknow", "Bhoothnath Market", "locality", True),
+        ("hostel in Indira Nagar", "Indira Nagar", "locality", True),
+        ("hostel around Gomti Nagar", "Gomti Nagar", "locality", True),
+        ("hostel near Munshi Pulia", "Munshi Pulia", "transit_hub", True),
+        ("hospital near KGMU", "King George's Medical University (KGMU)", "landmark", True),
+        ("hostel near Lucknow University New Campus", "Lucknow University New Campus", "landmark", True),
+        ("hostel around Jankipuram", "Jankipuram", "locality", True),
+        ("hostel near Alambagh", "Alambagh", "locality", True),
+        ("hostel near Hazratganj Market", "Hazratganj Market", "locality", True),
+        ("hostel near Phoenix Palassio", "Phoenix Palassio Mall", "landmark", True),
+        ("hostel on Faizabad Road", "Faizabad Road", "road", True),
+        ("hostel near Kanpur Road", "Kanpur Road", "road", True),
+        ("hostel around Shaheed Path", "Amar Shaheed Path", "road", True),
+        ("hostel near Chinhat", "Chinhat", "locality", True),
+        ("hostel in Gomti Nagar Extension", "Gomti Nagar Extension", "locality", True),
+        # Spelling variations
+        ("Bhootnath Market", "Bhoothnath Market", "locality", True),
+        ("Munshipulia", "Munshi Pulia", "transit_hub", True),
+        ("hostel on Kanpur Rd", "Kanpur Road", "road", True),
+        ("hostel on Faizabad Rd", "Faizabad Road", "road", True),
+        # Unmapped / Non-hallucinating location
+        ("hostel near ABC Market in Lucknow", "Abc Market", "unresolved", False)
+    ]
+
+    for q, exp_loc, exp_type, exp_resolved in matrix:
+        intent = IntentParser.parse_query(q)
+        assert intent.target_location == exp_loc, f"Failed for query '{q}': got '{intent.target_location}', expected '{exp_loc}'"
+        assert intent.location_type == exp_type, f"Failed type for '{q}': got '{intent.location_type}', expected '{exp_type}'"
+        assert intent.location_resolved == exp_resolved, f"Failed resolution for '{q}': got {intent.location_resolved}, expected {exp_resolved}"
+
+
 

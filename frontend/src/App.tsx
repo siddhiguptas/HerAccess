@@ -17,8 +17,8 @@ import { WatchlistDrawer } from './components/WatchlistDrawer';
 import { DemoControlPanel } from './components/DemoControlPanel';
 import { ResourceDetailModal } from './components/ResourceDetailModal';
 import {
-  Compass, ShieldCheck, Sparkles, Filter, RefreshCw, AlertCircle,
-  Building2, Train, Stethoscope, Pill, Shield, HeartHandshake
+  Sparkles, Train, Stethoscope, Pill, Shield, HeartHandshake,
+  Building2, Compass, CheckCircle2, RefreshCw, MapPin
 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -114,12 +114,24 @@ export const App: React.FC = () => {
     return mapResources.filter((r) => r.category === selectedCategoryFilter);
   }, [searchResponse, selectedCategoryFilter, mapResources]);
 
+  // Dynamically calculated category counts strictly based on runtime search & ecosystem response
+  const categoryCounts = React.useMemo(() => {
+    return {
+      all: searchResponse?.primary_results.length || 0,
+      public_transport: mapResources.filter((r) => r.category === 'public_transport').length,
+      hospital: mapResources.filter((r) => r.category === 'hospital').length,
+      pharmacy: mapResources.filter((r) => r.category === 'pharmacy').length,
+      police_or_public_support: mapResources.filter((r) => r.category === 'police_or_public_support').length,
+      women_support: mapResources.filter((r) => r.category === 'women_support').length,
+    };
+  }, [searchResponse, mapResources]);
+
   const watchedResourcesList = React.useMemo(() => {
     return mapResources.filter((r) => watchedIds.includes(r.id));
   }, [mapResources, watchedIds]);
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+    <div className="min-h-screen bg-warm-100 flex flex-col font-sans text-stone-900 selection:bg-rose-200">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -127,8 +139,8 @@ export const App: React.FC = () => {
         onOpenWatchlist={() => setIsWatchlistOpen(true)}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Interactive Demo Workflow Control Bar (Always visible on top for Judges) */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Interactive Verification Testbed (For evaluators and judges) */}
         <DemoControlPanel
           onStateChanged={() => {
             handleSearch(
@@ -143,106 +155,111 @@ export const App: React.FC = () => {
         {/* Tab 1: Navigator / Search Interface */}
         {activeTab === 'navigator' && (
           <div className="space-y-6">
-            <SearchHero onSearch={handleSearch} isLoading={isLoading} />
+            <SearchHero onSearch={handleSearch} isLoading={isLoading} currentIntent={searchResponse?.intent} />
 
-            {/* Structured Search Intent Callout */}
+            {/* Interpreted Search Intent Callout */}
             {searchResponse?.intent && (
-              <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Sparkles className="w-4 h-4 text-brand-400 shrink-0" />
-                  <span>
-                    <strong>Extracted Requirements:</strong> {searchResponse.intent.explanation}
-                  </span>
+              <div className="p-4 sm:p-5 rounded-3xl bg-white border border-warm-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+                <div className="flex items-center gap-2.5 text-stone-700">
+                  <div className="p-1.5 rounded-lg bg-rose-50 text-rosewood-700 border border-rose-200 shrink-0">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-stone-900 block text-xs">Understood Requirements:</span>
+                    <span className="text-stone-600 font-sans">{searchResponse.intent.explanation}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-slate-400 shrink-0">
-                  <span>{searchResponse.total_found} verified results</span>
+                <div className="flex items-center gap-2 text-stone-500 shrink-0 self-end sm:self-auto font-medium">
+                  <span className="px-2.5 py-1 rounded-full bg-warm-100 text-stone-700 font-semibold">{searchResponse.total_found} verified results</span>
                   <span>•</span>
                   <span>{searchResponse.execution_time_ms} ms</span>
                 </div>
               </div>
             )}
 
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-mono">
+            {/* Category Navigation Pills with Dynamic Calculated Counts */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
               <button
                 onClick={() => setSelectedCategoryFilter('all')}
-                className={`px-3.5 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'all'
-                    ? 'bg-brand-500 text-white border-brand-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-rosewood-700 text-white border-rosewood-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                All Ranked Hostels ({searchResponse?.primary_results.length || 0})
+                🏨 All Stays ({categoryCounts.all})
               </button>
               <button
                 onClick={() => setSelectedCategoryFilter('public_transport')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'public_transport'
-                    ? 'bg-sky-500 text-white border-sky-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-sky-700 text-white border-sky-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                <Train className="w-3.5 h-3.5 text-sky-400" />
-                <span>Metro / Transport</span>
+                <Train className="w-3.5 h-3.5" />
+                <span>Metro Stations ({categoryCounts.public_transport})</span>
               </button>
               <button
                 onClick={() => setSelectedCategoryFilter('hospital')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'hospital'
-                    ? 'bg-rose-500 text-white border-rose-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-rose-700 text-white border-rose-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                <Stethoscope className="w-3.5 h-3.5 text-rose-400" />
-                <span>Government Hospitals</span>
+                <Stethoscope className="w-3.5 h-3.5" />
+                <span>Hospitals ({categoryCounts.hospital})</span>
               </button>
               <button
                 onClick={() => setSelectedCategoryFilter('pharmacy')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'pharmacy'
-                    ? 'bg-emerald-500 text-white border-emerald-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-emerald-700 text-white border-emerald-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                <Pill className="w-3.5 h-3.5 text-emerald-400" />
-                <span>24x7 Chemist</span>
+                <Pill className="w-3.5 h-3.5" />
+                <span>24x7 Chemist ({categoryCounts.pharmacy})</span>
               </button>
               <button
                 onClick={() => setSelectedCategoryFilter('police_or_public_support')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'police_or_public_support'
-                    ? 'bg-indigo-500 text-white border-indigo-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-indigo-700 text-white border-indigo-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                <Shield className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Women Help Desks</span>
+                <Shield className="w-3.5 h-3.5" />
+                <span>Women Help Desks ({categoryCounts.police_or_public_support})</span>
               </button>
               <button
                 onClick={() => setSelectedCategoryFilter('women_support')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl border transition-all whitespace-nowrap font-semibold ${
                   selectedCategoryFilter === 'women_support'
-                    ? 'bg-pink-500 text-white border-pink-400 font-semibold'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
+                    ? 'bg-pink-700 text-white border-pink-800 shadow-sm'
+                    : 'bg-white text-stone-600 border-warm-300 hover:bg-warm-50 hover:text-stone-900 shadow-2xs'
                 }`}
               >
-                <HeartHandshake className="w-3.5 h-3.5 text-pink-400" />
-                <span>Support Centres / 1090</span>
+                <HeartHandshake className="w-3.5 h-3.5" />
+                <span>Support Centres / 1090 ({categoryCounts.women_support})</span>
               </button>
             </div>
 
             {/* Split View: Left List Cards / Right Interactive Map */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-              {/* Left Column: Results */}
+              {/* Left Column: Results List */}
               <div className="lg:col-span-6 space-y-4 max-h-[780px] overflow-y-auto pr-1">
                 {isLoading ? (
-                  <div className="p-16 text-center text-slate-400 font-mono text-xs flex items-center justify-center gap-2">
-                    <RefreshCw className="w-4 h-4 animate-spin text-brand-400" />
-                    <span>Parsing intent & querying verified resource database...</span>
+                  <div className="p-16 text-center text-stone-500 font-sans text-sm space-y-3 bg-white rounded-3xl border border-warm-300">
+                    <RefreshCw className="w-6 h-6 animate-spin text-rosewood-700 mx-auto" />
+                    <p className="font-semibold text-stone-800">Verifying live public sources...</p>
+                    <p className="text-xs text-stone-500">Checking accommodations, nearest hospitals, transit schedules, and emergency support network.</p>
                   </div>
                 ) : displayedResults.length === 0 ? (
-                  <div className="p-12 text-center bg-slate-900/60 rounded-2xl border border-slate-800 text-slate-400 font-mono text-xs">
-                    No resources matched current filters.
+                  <div className="p-12 text-center bg-white rounded-3xl border border-warm-300 text-stone-600 text-sm space-y-2">
+                    <p className="font-semibold text-stone-800">We couldn't find a verified match here yet.</p>
+                    <p className="text-xs text-stone-500">Try expanding your search area or budget criteria.</p>
                   </div>
                 ) : (
                   displayedResults.map((res) => (
@@ -260,12 +277,17 @@ export const App: React.FC = () => {
                 )}
               </div>
 
-              {/* Right Column: Map */}
+              {/* Right Column: Interactive Map */}
               <div className="lg:col-span-6 sticky top-24 h-[720px]">
                 <MapView
                   resources={mapResources}
                   selectedResource={selectedResource}
                   onSelectResource={(res) => setSelectedResource(res)}
+                  center={
+                    searchResponse?.primary_results[0]?.latitude && searchResponse?.primary_results[0]?.longitude
+                      ? [searchResponse.primary_results[0].latitude, searchResponse.primary_results[0].longitude]
+                      : [26.8528, 80.9463]
+                  }
                 />
               </div>
             </div>
@@ -306,11 +328,21 @@ export const App: React.FC = () => {
         onSelectEvidence={(ev) => setSelectedEvidence(ev)}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs font-mono text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>HerAccess — Built for Into the Scrape-Verse Hackathon</span>
-          <span>Core Infrastructure: Bright Data Scraper Studio</span>
+      {/* Editorial Footer */}
+      <footer className="border-t border-warm-300/80 bg-warm-200/50 py-8 text-xs text-stone-600 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="font-serif font-bold text-lg text-stone-900">
+              Her<span className="text-brand-700 italic font-normal">Access</span>
+            </span>
+            <span className="text-stone-400">|</span>
+            <span>Empowering women with verified public safety intelligence in new cities</span>
+          </div>
+          <div className="flex items-center gap-2 text-stone-500 font-medium">
+            <span>Lucknow Network Coverage</span>
+            <span>•</span>
+            <span>Bright Data Infrastructure</span>
+          </div>
         </div>
       </footer>
     </div>

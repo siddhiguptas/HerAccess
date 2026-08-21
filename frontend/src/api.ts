@@ -61,6 +61,37 @@ export const api = {
     return res.json();
   },
 
+  getRealHealStatus: async (): Promise<any> => {
+    const res = await fetch(`${API_BASE}/demo/real/status`);
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  triggerRealBreak: async (collectorId: string = 'c_mt1f0ke713h6n32pi4'): Promise<any> => {
+    const res = await fetch(`${API_BASE}/demo/real/trigger-break?collector_id=${collectorId}`, {
+      method: 'POST'
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  triggerRealHeal: async (collectorId: string = 'c_mt1f0ke713h6n32pi4', prompt?: string): Promise<any> => {
+    const url = prompt
+      ? `${API_BASE}/demo/real/trigger-heal?collector_id=${collectorId}&prompt=${encodeURIComponent(prompt)}`
+      : `${API_BASE}/demo/real/trigger-heal?collector_id=${collectorId}`;
+    const res = await fetch(url, { method: 'POST' });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  resetRealHeal: async (collectorId: string = 'c_mt1f0ke713h6n32pi4'): Promise<any> => {
+    const res = await fetch(`${API_BASE}/demo/real/reset?collector_id=${collectorId}`, {
+      method: 'POST'
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
   getDemoStatus: async (): Promise<DemoStatusResponse> => {
     const res = await fetch(`${API_BASE}/demo/status`);
     if (!res.ok) throw new Error(await res.text());

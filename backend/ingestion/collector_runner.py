@@ -63,9 +63,19 @@ COLLECTOR_REGISTRY = [
         "is_real_collector": True
     },
     {
+        "collector_id": "c_police_up_01",
+        "aliases": ["c_police_stations_01"],
+        "name": "UP Police Women Help Desks & Thana Network Extractor",
+        "category": ResourceCategory.POLICE_OR_PUBLIC_SUPPORT,
+        "target_url": "https://uppolice.gov.in/lucknow/police-stations-directory",
+        "fixture_file": "up_police_stations.json",
+        "extraction_prompt": "Extract police stations with dedicated 24x7 Mission Shakti Women Help Desks in Lucknow, station in-charge contact, address, locality, and emergency 112 dispatch.",
+        "is_real_collector": True
+    },
+    {
         "collector_id": "c_mt1fv0wlyfkwe8z5y",
-        "aliases": ["c_police_up_01", "c_support_1090_01"],
-        "name": "UP Police Women Power Line 1090 Extractor",
+        "aliases": ["c_support_1090_01", "c_women_osc_01"],
+        "name": "UP Police Women Power Line 1090 & Sakhi OSC Extractor",
         "category": ResourceCategory.WOMEN_SUPPORT,
         "target_url": "https://1090up.in/",
         "fixture_file": "women_support_centres.json",

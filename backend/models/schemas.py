@@ -87,6 +87,9 @@ class SearchRequest(BaseModel):
 class ParsedIntent(BaseModel):
     city: str = "Lucknow"
     target_location: Optional[str] = None
+    location_type: str = "locality" # "locality" | "landmark" | "road" | "transit_hub" | "unresolved"
+    location_resolved: bool = True
+    raw_location: Optional[str] = None
     user_type: str = "female_student"
     budget_max: Optional[float] = None
     distance_max_km: Optional[float] = 5.0

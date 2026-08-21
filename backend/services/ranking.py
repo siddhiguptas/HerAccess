@@ -14,7 +14,10 @@ class TransparentRankingEngine:
         has_nearby_transport: bool,
         has_nearby_hospital: bool,
         verification_status: VerificationStatus = VerificationStatus.HIGH,
-        num_sources: int = 1
+        num_sources: int = 1,
+        meals_requested: bool = False,
+        location_resolved: bool = True,
+        target_location: Optional[str] = None
     ) -> Tuple[float, List[RankingFactor]]:
         """
         Calculates a deterministic match score based on explicit criteria:
@@ -93,10 +96,18 @@ class TransparentRankingEngine:
             ))
 
         # 3. Distance from Target Hub
-        if distance_km <= distance_max_km:
+        if not location_resolved and target_location:
             factors.append(RankingFactor(
                 factor_name="distance",
-                label=f"✓ Within requested radius ({distance_km:.1f} km from target location)",
+                label=f"? '{target_location}' unmapped — showing citywide candidate ({distance_km:.1f} km from center)",
+                score_contribution=1.0,
+                matched=True
+            ))
+            total_score += 1.0
+        elif distance_km <= distance_max_km:
+            factors.append(RankingFactor(
+                factor_name="distance",
+                label=f"✓ Within requested radius ({distance_km:.1f} km from {target_location or 'target location'})",
                 score_contribution=2.0,
                 matched=True
             ))
@@ -181,6 +192,34 @@ class TransparentRankingEngine:
                 matched=True
             ))
             total_score += 1.5
+
+        # 9. Meals / Mess Service Factor
+        if meals_requested:
+            meals_included = resource_attributes.get("meals_included")
+            facilities = str(resource_attributes.get("facilities", "")).lower()
+            mess_avail = (meals_included is True) or any(m in facilities for m in ["mess", "food", "meals", "canteen", "dining"])
+            if mess_avail:
+                factors.append(RankingFactor(
+                    factor_name="meals_included",
+                    label="✓ In-house meals / mess service verified in source",
+                    score_contribution=2.0,
+                    matched=True
+                ))
+                total_score += 2.0
+            elif meals_included is False:
+                factors.append(RankingFactor(
+                    factor_name="meals_included",
+                    label="✗ No in-house meals (self-cooking / outside tiffin required)",
+                    score_contribution=0.0,
+                    matched=False
+                ))
+            else:
+                factors.append(RankingFactor(
+                    factor_name="meals_included",
+                    label="? In-house mess policy unconfirmed in source",
+                    score_contribution=0.0,
+                    matched=False
+                ))
 
         return round(total_score, 1), factors
 

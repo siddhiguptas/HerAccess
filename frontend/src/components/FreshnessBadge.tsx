@@ -1,6 +1,6 @@
 import React from 'react';
 import { FreshnessLevel } from '../types';
-import { Clock, CheckCircle2, AlertTriangle, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, AlertCircle, Clock } from 'lucide-react';
 
 interface Props {
   level: FreshnessLevel;
@@ -11,20 +11,20 @@ interface Props {
 export const FreshnessBadge: React.FC<Props> = ({ level, observedAt, className = '' }) => {
   const formatObservedText = () => {
     if (!observedAt) {
-      if (level === 'green') return 'Last observed < 24h ago';
+      if (level === 'green') return 'Live source (< 24h)';
       if (level === 'yellow') return 'Observed 1-7 days ago';
-      return 'Stale (> 7 days ago)';
+      return 'Audited (> 7d)';
     }
 
     try {
       const date = new Date(observedAt);
       const now = new Date();
       const diffHours = Math.round((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-      if (diffHours <= 1) return 'Last observed ~1 hour ago';
-      if (diffHours < 24) return `Last observed ${diffHours}h ago`;
+      if (diffHours <= 1) return 'Observed ~1h ago';
+      if (diffHours < 24) return `Observed ${diffHours}h ago`;
       const diffDays = Math.round(diffHours / 24);
-      if (diffDays <= 7) return `Last observed ${diffDays}d ago`;
-      return `Last observed ${diffDays}d ago`;
+      if (diffDays <= 7) return `Observed ${diffDays}d ago`;
+      return `Observed ${diffDays}d ago`;
     } catch {
       return 'Observation recorded';
     }
@@ -34,21 +34,21 @@ export const FreshnessBadge: React.FC<Props> = ({ level, observedAt, className =
     switch (level) {
       case 'green':
         return {
-          bg: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/60',
-          dot: 'bg-emerald-400',
+          bg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+          dot: 'bg-emerald-600',
           icon: CheckCircle2
         };
       case 'yellow':
         return {
-          bg: 'bg-amber-950/80 text-amber-300 border-amber-800/60',
-          dot: 'bg-amber-400',
+          bg: 'bg-amber-50 text-amber-800 border-amber-200',
+          dot: 'bg-amber-500',
           icon: AlertTriangle
         };
       case 'red':
       default:
         return {
-          bg: 'bg-rose-950/80 text-rose-300 border-rose-800/60',
-          dot: 'bg-rose-400',
+          bg: 'bg-rose-50 text-rose-800 border-rose-200',
+          dot: 'bg-rose-500',
           icon: AlertCircle
         };
     }
@@ -59,7 +59,7 @@ export const FreshnessBadge: React.FC<Props> = ({ level, observedAt, className =
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border ${config.bg} ${className}`}
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${config.bg} ${className}`}
       title={observedAt ? `Source observation recorded at: ${new Date(observedAt).toLocaleString()}` : undefined}
     >
       <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />

@@ -72,26 +72,12 @@ class IntentParser:
                 city = "Bengaluru" if c == "bangalore" else ("Delhi" if c == "new delhi" else ("Gurugram" if c == "gurgaon" else c.title()))
                 break
 
-        # 2. Target Locality extraction
-        target_loc = None
-        city_localities = {
-            "lucknow": [
-                "gomti nagar", "hazratganj", "indira nagar", "alambagh", "lda colony",
-                "mahanagar", "aliganj", "charbagh", "jankipuram", "telibagh",
-                "ashiyana", "munshi pulia", "chowk", "kanpur rd", "kanpur road"
-            ],
-            "delhi": ["connaught place", "hauz khas", "saket", "lajpat nagar", "dwarka", "rohini", "karol bagh"],
-            "bengaluru": ["koramangala", "indiranagar", "whitefield", "hsr layout", "electronic city", "marathahalli"],
-            "mumbai": ["bandra", "andheri", "juhu", "powai", "dadar", "colaba", "thane"]
-        }
-        localities_to_check = city_localities.get(city.lower(), city_localities["lucknow"])
-        for loc in localities_to_check:
-            if loc in q_lower:
-                target_loc = "LDA Colony" if loc in ["kanpur rd", "kanpur road"] else loc.title()
-                break
+        # 2. Dynamic Generalized Location Extraction (No hardcoded elif chains)
+        from backend.services.location_index import LocationExtractor
+        target_loc, loc_type, loc_resolved, raw_loc, coords = LocationExtractor.extract_location(query, city)
 
-        # 3. Budget extraction (e.g. under ₹12,000, under 12000, 10k, ₹10k, max 15000, under ₹9000)
-        budget_max = user_budget
+        # 3. Budget extraction (Query text takes absolute precedence over default filters)
+        budget_max = None
         budget_match = re.search(r'(?:under|below|budget|upto|within|max|around|for)?\s*(?:rs\.?|₹)?\s*(\d{1,3}(?:,\d{3})+|\d+)\s*(k|thousand|/month|pm)?', q_lower)
         if budget_match and budget_match.group(1):
             val_str = budget_match.group(1).replace(",", "")
@@ -105,7 +91,6 @@ class IntentParser:
             except ValueError:
                 pass
 
-        # Explicit regex check for standalone ₹12,000 or ₹9000 or 12k
         if not budget_max:
             direct_price_match = re.search(r'(?:₹|rs\.?)\s*(\d{1,3}(?:,\d{3})+|\d+)\s*(k)?', q_lower)
             if direct_price_match:
@@ -119,6 +104,10 @@ class IntentParser:
                         budget_max = num
                 except ValueError:
                     pass
+
+        # Fallback to user_budget parameter only if query text contained no budget
+        if budget_max is None:
+            budget_max = user_budget
 
         # 4. User Type
         user_type = "female_student"
@@ -147,17 +136,21 @@ class IntentParser:
             categories.append(ResourceCategory.WOMEN_SUPPORT)
 
         # 6. Preferences
+        has_meals_req = any(term in q_lower for term in ["meal", "meals", "food", "mess", "canteen", "dining"])
         preferences = {
             "women_only": True, # HerAccess defaults to women-safety priority
-            "meals_included": any(term in q_lower for term in ["food", "meal", "mess", "breakfast", "dinner", "tiffin"]),
-            "ac_preferred": "ac" in q_lower or "air condition" in q_lower,
+            "meals_included": has_meals_req,
+            "ac_preferred": "ac" in q_lower.split(),
             "transport_nearby": has_transport_req,
             "healthcare_nearby": has_hospital_req
         }
 
         explanation = f"Structured requirements: {user_type.replace('_', ' ').title()} looking in {city}"
         if target_loc:
-            explanation += f" near {target_loc}"
+            if loc_resolved:
+                explanation += f" near {target_loc} ({loc_type.replace('_', ' ').title()})"
+            else:
+                explanation += f" near {target_loc} (unmapped location, searching citywide)"
         if budget_max:
             explanation += f" (Budget: under ₹{budget_max:,.0f}/mo)"
         if has_hospital_req and has_transport_req:
@@ -170,6 +163,9 @@ class IntentParser:
         return ParsedIntent(
             city=city,
             target_location=target_loc,
+            location_type=loc_type,
+            location_resolved=loc_resolved,
+            raw_location=raw_loc,
             user_type=user_type,
             budget_max=budget_max,
             distance_max_km=5.0,

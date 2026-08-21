@@ -31,6 +31,34 @@ async def lifespan(app: FastAPI):
                     logger.info(f"Ingested {count} records from {col['collector_id']} (pass rate: {pass_rate*100:.1f}%)")
                 except Exception as e:
                     logger.error(f"Error ingesting fixture {col['collector_id']}: {e}")
+
+            # Cross-source factual conflict detection evaluation
+            from backend.models.database import Conflict, ResourceAttribute
+            from backend.verification.conflict_detector import ConflictDetector
+            from backend.models.enums import VerificationStatus
+            from datetime import datetime
+
+            if db.query(Conflict).count() == 0:
+                kamla = db.query(Resource).filter(Resource.name.like("%Kamla%")).first()
+                if kamla:
+                    dir_url = "https://www.sulekha.com/womens-hostel/hazratganj-lucknow/kamla-girls-hostel"
+                    db.add(ResourceAttribute(
+                        resource_id=kamla.id,
+                        field_name="monthly_price",
+                        raw_value="₹12,500/month",
+                        normalized_value=12500.0,
+                        source_url=dir_url,
+                        source_domain="sulekha.com",
+                        evidence_text="Sulekha aggregator listing reported average monthly rent of ₹12,500.",
+                        observed_at=datetime.utcnow(),
+                        collector_id="c_mt1i5ri4trltbvw66",
+                        verification_status=VerificationStatus.MEDIUM,
+                        confidence_score=0.8
+                    ))
+                    db.commit()
+                    ConflictDetector.check_and_record_conflict(
+                        db, kamla.id, "monthly_price", 12500.0, dir_url, datetime.utcnow()
+                    )
         else:
             logger.info(f"Database already contains {res_count} verified resources.")
     finally:

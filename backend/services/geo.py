@@ -16,8 +16,15 @@ LUCKNOW_LOCALITY_COORDINATES = {
     "jankipuram": (26.9152, 80.9421),
     "university campus": (26.9152, 80.9421),
     "university second campus": (26.9152, 80.9421),
+    "university new campus": (26.9152, 80.9421),
+    "lucknow university new campus": (26.9152, 80.9421),
+    "lucknow university second campus": (26.9152, 80.9421),
+    "second campus": (26.9152, 80.9421),
+    "new campus": (26.9152, 80.9421),
     "ganga hall": (26.9152, 80.9421),
     "lucknow university": (26.8650, 80.9380),
+    "university of lucknow": (26.8650, 80.9380),
+    "old campus": (26.8650, 80.9380),
     "vishwavidyalaya": (26.8650, 80.9380),
     "charbagh": (26.8320, 80.9180),
     "lucknow charbagh railway station": (26.8320, 80.9180),
@@ -37,6 +44,14 @@ LUCKNOW_LOCALITY_COORDINATES = {
     "badshahnagar": (26.8745, 80.9610),
     "lekhraj market": (26.8780, 80.9720),
     "bhootnath market": (26.8810, 80.9810),
+    "bhoothnath market": (26.8810, 80.9810),
+    "bhootnath": (26.8810, 80.9810),
+    "bhoothnath": (26.8810, 80.9810),
+    "aliganj": (26.8920, 80.9390),
+    "mahanagar": (26.8770, 80.9520),
+    "chowk": (26.8670, 80.9020),
+    "ashiyana": (26.7850, 80.9120),
+    "telibagh": (26.7910, 80.9420),
     "lucknow": (26.8467, 80.9462)
 }
 
@@ -75,22 +90,28 @@ class GeoService:
     @classmethod
     def resolve_target_coordinates(cls, target_location: Optional[str], city: str = "Lucknow") -> Tuple[float, float]:
         """
-        Resolves target coordinate from locality dictionary for the given city,
+        Resolves target coordinate from dynamic LocationIndex for the given city,
         or falls back to the city centroid.
         """
-        city_lower = (city or "Lucknow").lower().strip()
-        localities = CITY_LOCALITY_MAP.get(city_lower, LUCKNOW_LOCALITY_COORDINATES)
-
         if target_location:
-            loc_lower = target_location.lower().strip()
-            for key, coords in localities.items():
-                if key in loc_lower:
-                    return coords
+            from backend.services.location_index import LocationIndex
+            coords = LocationIndex.get_instance().get_coordinates(target_location)
+            if coords:
+                return coords
 
-        # City fallback centroid
+        city_lower = (city or "Lucknow").lower().strip()
         if city_lower in CITY_CENTROIDS:
             return CITY_CENTROIDS[city_lower]
-        return localities.get("lucknow", (26.8467, 80.9462))
+        return LUCKNOW_LOCALITY_COORDINATES.get("lucknow", (26.8467, 80.9462))
+
+    @classmethod
+    def is_location_resolvable(cls, target_location: Optional[str], city: str = "Lucknow") -> bool:
+        """Returns True if the location is known with real geo-coordinates, False otherwise."""
+        if not target_location:
+            return True
+        from backend.services.location_index import LocationIndex
+        coords = LocationIndex.get_instance().get_coordinates(target_location)
+        return coords is not None
 
     @classmethod
     def build_local_support_chain(cls, db_session, origin_lat: float, origin_lon: float, origin_resource_id: int) -> List[Dict[str, Any]]:

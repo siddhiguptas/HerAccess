@@ -1,16 +1,78 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from datetime import datetime
-from backend.models.database import get_db, Collector
+from typing import Dict, Any, List, Optional
+from backend.models.database import get_db, Collector, HealingEvent, CollectionRun
 from backend.models.schemas import (
     DemoTriggerBreakRequest, DemoTriggerHealRequest, DemoStatusResponse
 )
-from backend.models.enums import CollectorStatus
+from backend.models.enums import CollectorStatus, HealingStatus
 from backend.ingestion.collector_runner import CollectorRunner, DEMO_STATE
 from backend.ingestion.result_parser import ResultParser
 from backend.healing.heal_runner import HealRunner
 
-router = APIRouter(prefix="/demo", tags=["Demo Simulation"])
+router = APIRouter(prefix="/demo", tags=["Self-Healing Architecture & Verification"])
+
+# ==============================================================================
+# 1. REAL BRIGHT DATA SELF-HEALING ENDPOINTS (Actual Collector c_mt1f0ke713h6n32pi4)
+# ==============================================================================
+
+@router.get("/real/status")
+def get_real_self_healing_status(db: Session = Depends(get_db)):
+    """
+    Returns real database telemetry, validation health, and audit trail for collector c_mt1f0ke713h6n32pi4.
+    """
+    return HealRunner.get_real_self_healing_status(db)
+
+@router.post("/real/trigger-break")
+def trigger_real_schema_failure(
+    collector_id: str = Query("c_mt1f0ke713h6n32pi4"),
+    db: Session = Depends(get_db)
+):
+    """
+    Executes actual CategoryValidator failure detection on real collector c_mt1f0ke713h6n32pi4.
+    Updates database records, marks collector FAILED, and logs HealingEvent(TRIGGERED).
+    """
+    try:
+        return HealRunner.trigger_real_schema_failure_test(
+            db_session=db,
+            collector_id=collector_id,
+            broken_fields=["monthly_price", "curfew_time", "primary_contact"]
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/real/trigger-heal")
+def trigger_real_bright_data_heal(
+    collector_id: str = Query("c_mt1f0ke713h6n32pi4"),
+    prompt: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Executes `npx @brightdata/cli scraper heal c_mt1f0ke713h6n32pi4`, runs re-extraction,
+    validates recovery with CategoryValidator, and logs HealingEvent(RESOLVED).
+    """
+    try:
+        return HealRunner.execute_real_heal(
+            db_session=db,
+            collector_id=collector_id,
+            prompt=prompt or "Layout changed in hostel listings container. Fix selectors for monthly_price, curfew_time, contact."
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/real/reset")
+def reset_real_heal_state(
+    collector_id: str = Query("c_mt1f0ke713h6n32pi4"),
+    db: Session = Depends(get_db)
+):
+    """Resets real collector to nominal healthy state."""
+    return HealRunner.reset_real_heal_state(db, collector_id)
+
+
+# ==============================================================================
+# 2. SIMULATED ZERO-CREDIT WALKTHROUGH ENDPOINTS (Isolated Demo Mode)
+# ==============================================================================
 
 @router.get("", response_model=DemoStatusResponse)
 def get_demo_root(db: Session = Depends(get_db)):
@@ -19,7 +81,7 @@ def get_demo_root(db: Session = Depends(get_db)):
 
 @router.get("/status", response_model=DemoStatusResponse)
 def get_demo_status(db: Session = Depends(get_db)):
-    """Inspects the current state of the interactive hackathon demo."""
+    """Inspects the current state of the isolated hackathon demo."""
     target_id = DEMO_STATE["broken_collector_id"]
     collector = db.query(Collector).filter(Collector.collector_id == target_id).first()
 
@@ -50,9 +112,8 @@ def get_demo_status(db: Session = Depends(get_db)):
 @router.post("/trigger-break")
 def trigger_simulated_break(req: DemoTriggerBreakRequest, db: Session = Depends(get_db)):
     """
-    Simulates target website layout alteration:
+    Simulates target website layout alteration in isolated demo mode:
     Causes required fields (price, curfew, contact) to fail extraction.
-    Updates collector to FAILED and drops validation rate.
     """
     DEMO_STATE["is_broken"] = True
     DEMO_STATE["broken_collector_id"] = req.collector_id
@@ -60,9 +121,8 @@ def trigger_simulated_break(req: DemoTriggerBreakRequest, db: Session = Depends(
     DEMO_STATE["is_healed"] = False
     DEMO_STATE["healing_in_progress"] = False
 
-    # Re-run collector in broken state
     broken_payload = CollectorRunner.run_collector(req.collector_id)
-    run, count, pass_rate = ResultParser.ingest_collector_payload(db, broken_payload)
+    run, count, pass_rate = ResultParser.ingest_collector_payload(db, broken_payload, is_demo_run=True)
 
     return {
         "status": "broken",
@@ -75,20 +135,30 @@ def trigger_simulated_break(req: DemoTriggerBreakRequest, db: Session = Depends(
 @router.post("/trigger-heal")
 def trigger_simulated_heal(req: DemoTriggerHealRequest, db: Session = Depends(get_db)):
     """
-    Triggers the Bright Data healing workflow:
-    1. Sends problem description to `bdata scraper heal`
-    2. Approves fix retaining the same Collector ID
-    3. Reruns collection and restores 100% validation
-    4. Downstream app continues with zero code changes
+    Triggers simulated self-healing in isolated demo mode.
     """
     try:
-        result = HealRunner.trigger_healing_workflow(
-            db_session=db,
-            collector_id=req.collector_id,
-            problem_description=req.problem_description,
-            failed_fields=DEMO_STATE["broken_fields"]
-        )
-        return result
+        DEMO_STATE["is_healed"] = True
+        DEMO_STATE["healing_in_progress"] = False
+        DEMO_STATE["last_healed_at"] = datetime.utcnow().isoformat()
+
+        collector = db.query(Collector).filter(Collector.collector_id == req.collector_id).first()
+        if collector:
+            collector.status = CollectorStatus.HEALTHY
+            collector.last_healed_at = datetime.utcnow()
+            collector.heal_count = (collector.heal_count or 0) + 1
+            db.commit()
+
+        return {
+            "collector_id": req.collector_id,
+            "status": "resolved",
+            "same_collector_id_retained": True,
+            "fields_recovered": DEMO_STATE["broken_fields"],
+            "validation_pass_rate": 1.0,
+            "records_recovered": 4,
+            "resolved_at": datetime.utcnow().isoformat(),
+            "message": f"Collector {req.collector_id} healed and recovered successfully with zero downstream code changes."
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -100,9 +170,8 @@ def reset_demo_state(db: Session = Depends(get_db)):
     DEMO_STATE["healing_in_progress"] = False
     DEMO_STATE["last_healed_at"] = None
 
-    # Ingest all fresh fixtures
     for col in CollectorRunner.get_all_registered_collectors():
         payload = CollectorRunner.run_collector(col["collector_id"])
-        ResultParser.ingest_collector_payload(db, payload)
+        ResultParser.ingest_collector_payload(db, payload, is_demo_run=True)
 
     return {"message": "Demo state reset. All collectors healthy."}

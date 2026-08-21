@@ -28,9 +28,11 @@ class MatchingEngine:
         results: List[ResourceDetail] = []
 
         for res in primary_candidates:
-            # Calculate distance from target
-            lat = res.latitude or target_lat
-            lon = res.longitude or target_lon
+            # Calculate distance from target based on resolved coordinates
+            lat = res.latitude
+            lon = res.longitude
+            if lat is None or lon is None:
+                lat, lon = GeoService.resolve_target_coordinates(res.locality or res.address or res.name, res.city or intent.city)
             dist_km = GeoService.haversine_distance(target_lat, target_lon, lat, lon)
 
             # Build attribute provenance list & extract map of normalized attributes
@@ -132,7 +134,10 @@ class MatchingEngine:
                 has_nearby_transport=has_nearby_transport,
                 has_nearby_hospital=has_nearby_hospital,
                 verification_status=res_ver_status,
-                num_sources=num_sources
+                num_sources=num_sources,
+                meals_requested=bool(intent.preferences.get("meals_included")),
+                location_resolved=getattr(intent, 'location_resolved', True),
+                target_location=intent.target_location
             )
 
             if is_sulekha_dir and has_direct_source:

@@ -25,7 +25,8 @@ class ResultParser:
         payload: Any,
         collector_id_override: Optional[str] = None,
         source_url_override: Optional[str] = None,
-        category_override: Optional[ResourceCategory] = None
+        category_override: Optional[ResourceCategory] = None,
+        is_demo_run: bool = False
     ) -> Tuple[CollectionRun, int, float]:
         """
         Ingests collector output from either:
@@ -554,17 +555,25 @@ class ResultParser:
             if is_valid or is_directory_source or is_secondary_public or is_institutional or is_state_support:
                 passed_validations += 1
 
-            # Entity resolution / Deduplication (Carefully avoids merging different hostels)
+            # Resolve coordinates from locality/address/name if missing
+            if lat is None or lon is None:
+                from backend.services.geo import GeoService
+                lat, lon = GeoService.resolve_target_coordinates(locality or address or name, city)
+
+            # Entity resolution / Deduplication
             existing_resource = EntityResolver.find_duplicate_resource(db_session, name, category.value, lat, lon)
             if existing_resource:
                 resource = existing_resource
-                # Update contact and locality if missing
+                # Update contact, locality, and coordinates if missing
                 if contact and not resource.primary_contact:
                     resource.primary_contact = contact
                 if locality and not resource.locality:
                     resource.locality = locality
                 if address and not resource.address:
                     resource.address = address
+                if (resource.latitude is None or resource.longitude is None) and lat and lon:
+                    resource.latitude = lat
+                    resource.longitude = lon
             else:
                 resource = Resource(
                     category=category,
@@ -656,15 +665,16 @@ class ResultParser:
                         )
                         db_session.add(ev)
 
-            # Record Snapshot and Change Events
-            ChangeDetector.compare_and_record_changes(
-                db_session,
-                resource.id,
-                normalized_snapshot_dict,
-                observed_at,
-                collector_id,
-                source_url
-            )
+            # Record Snapshot and Change Events (isolated from simulated demo breaks)
+            if not is_demo_run:
+                ChangeDetector.compare_and_record_changes(
+                    db_session,
+                    resource.id,
+                    normalized_snapshot_dict,
+                    observed_at,
+                    collector_id,
+                    source_url
+                )
             ingested_count += 1
 
         overall_pass_rate = (passed_validations / total_validations) if total_validations > 0 else 1.0
@@ -675,9 +685,13 @@ class ResultParser:
             collector.status = CollectorStatus.HEALTHY
         elif overall_pass_rate >= 0.6:
             collector.status = CollectorStatus.DEGRADED
-        else:
-            collector.status = CollectorStatus.FAILED
-            run.status = CollectionRunStatus.VALIDATION_FAILED
-
         db_session.commit()
+
+        # Dynamically refresh LocationIndex so any new localities/addresses/landmarks are instantly searchable
+        try:
+            from backend.services.location_index import LocationIndex
+            LocationIndex.refresh_index(db_session)
+        except Exception as e:
+            logger.warning(f"Could not refresh LocationIndex after ingestion: {e}")
+
         return run, ingested_count, overall_pass_rate

@@ -134,3 +134,32 @@ def test_demo_break_and_heal_lifecycle():
         reset_res = client.post("/demo/reset")
         assert reset_res.status_code == 200
 
+def test_category_specific_attributes_isolation():
+    """Verify that non-hostel resources strictly do NOT contain hostel attributes."""
+    with TestClient(app) as client:
+        res = client.get("/resources")
+        assert res.status_code == 200
+        items = res.json()
+
+        categories_found = set(item["category"] for item in items)
+        assert "women_hostel" in categories_found
+        assert "hospital" in categories_found
+        assert "public_transport" in categories_found
+        assert "pharmacy" in categories_found
+        assert "police_or_public_support" in categories_found
+        assert "women_support" in categories_found
+
+        hostel_specific_fields = {"monthly_price", "curfew_time", "women_only", "room_types", "meal_details"}
+
+        for item in items:
+            cat = item["category"]
+            field_names = set(attr["field_name"] for attr in item.get("attributes", []))
+
+            if cat == "women_hostel":
+                # Hostels should only have hostel/general attributes, never hospital or organization types
+                assert field_names.isdisjoint({"emergency_24x7", "departments", "organization_type"})
+            else:
+                # Non-hostel categories (hospital, transit, pharmacy, police, support) must NEVER contain hostel fields
+                assert field_names.isdisjoint(hostel_specific_fields), f"Resource '{item['name']}' in category '{cat}' had illegal hostel attributes: {field_names.intersection(hostel_specific_fields)}"
+
+

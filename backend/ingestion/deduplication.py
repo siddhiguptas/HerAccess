@@ -23,7 +23,7 @@ class EntityResolver:
         candidates = query.all()
         
         normalized_target_name = name.lower().strip()
-        generic_tokens = {"girls", "hostel", "pg", "women", "womens", "ladies", "living", "space", "residency", "&", "the", "and", "in", "lucknow"}
+        generic_tokens = {"girls", "hostel", "pg", "women", "womens", "ladies", "living", "space", "residency", "&", "the", "and", "in", "lucknow", "uttar", "pradesh", "state", "government", "govt", "department", "center", "centre"}
         distinct_target_words = set(w for w in normalized_target_name.split() if w not in generic_tokens)
 
         for cand in candidates:
