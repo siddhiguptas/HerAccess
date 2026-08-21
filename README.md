@@ -1,176 +1,154 @@
-# HerAccess -- Verified Local Access & Support Navigator for Women
+# HerAccess
 
-> **Into the Scrape-Verse Hackathon** (WeMakeDevs x Bright Data)
-> Powered by **Bright Data Scraper Studio & CLI**, FastAPI, React/TypeScript, Leaflet, and SQLite.
-
----
-
-## 1. Problem & Context
-
-When women relocate to a new city for education or employment, finding safe, affordable accommodation and surrounding critical infrastructure is fragmented and fraught with uncertainty:
-
-1. **Information Fragmentation**: Women's hostels, public hospitals, 24-hour pharmacies, metro transit networks, and dedicated women's police helpdesks live on separate, disparate websites without a unified graph.
-2. **Aggregator Limitations**: Commercial aggregators and directories prioritise sponsored placements, often lack granular female-safety details (such as strict gate-closing curfews or vegetarian-only meal mandates), and lack verifiable proof for their listings.
-3. **Stale and Unverified Claims**: Rent prices and contact numbers change rapidly, leading to wasted transit time or unsafe situations.
-
-### How Bright Data Solves This
-
-Bright Data's **Scraper Studio** and **Web Unlocker** infrastructure allows HerAccess to:
-
-- Autonomously scrape unstructured, long-tail local provider domains without manual parser maintenance.
-- Extract granular text claims (room configurations, monthly rent, curfew ranges, rules).
-- Retain exact **source provenance, URLs, and extraction timestamps** for full auditability.
-- Utilise **AI-driven Self-Healing (`bdata scraper heal`)** to automatically recover broken extractors when target websites update their DOM layout -- preserving the **same Collector ID** without breaking downstream systems.
+A verified local access and support navigator for women relocating to new cities. HerAccess aggregates and cross-validates women's accommodations, public healthcare, transit networks, emergency helplines, and support services from primary public sources into a single searchable interface.
 
 ---
 
-## 2. Core Features
+## Overview
 
-### Natural-Language Search with Deterministic Ranking
+Women relocating to a new city for education or employment face fragmented, unverified, and stale information across dozens of disconnected sources. HerAccess addresses this by:
 
-Query: *"I'm moving to Lucknow for college. Find a women's hostel under 12,000 with healthcare and public transport nearby."*
+- Scraping primary provider websites, government portals, and directory listings using Bright Data Scraper Studio collectors.
+- Extracting granular, field-level claims (rent ranges, curfew timings, emergency availability, helpline numbers) with full source attribution.
+- Maintaining a provenance chain for every displayed value: extracted value, source URL, collector ID, and observation timestamp.
+- Detecting cross-source discrepancies and surfacing them explicitly rather than silently resolving them.
+- Monitoring for DOM-level changes on target websites and invoking `bdata scraper heal` to recover broken extractors without changing downstream collector IDs.
 
-The query is parsed into structured requirements (`city`, `user_type`, `budget_max`, `required_categories`, `preferences`) and scored with a fully explainable, deterministic factor engine -- no opaque AI hallucinations.
+---
 
-### Cross-Source Hostel Intelligence and Safe Deduplication
+## Features
 
-- Merges verified direct-source provider sites (e.g. Kamla Girls Hostel) with multi-listing discovery directories (e.g. Sulekha).
-- Distinguishes **Direct Source (High Verification)** from **Directory Listing (Medium Verification)**.
-- Awards multi-source trust bonus points for corroborated records.
+### Natural-Language Search
+
+Accepts free-form queries in English or Hinglish. Parses them into structured intent fields (city, user type, budget ceiling, required resource categories, locality preference) using a regex and keyword mapping engine. Results are ranked by a fully deterministic, explainable scoring function with no opaque model inference.
 
 ### Category-Specific Resource Cards
 
-Each resource category renders only the fields relevant to it:
+Each resource category renders only its relevant fields:
 
-- **Hostels**: rent range, curfew/gate time, occupancy type, meals included.
-- **Hospitals**: emergency availability, departments, trauma designation.
-- **Pharmacies**: 24-hour availability, home delivery, inventory notes.
-- **Metro**: line name, operating hours, fare range, women's coach availability.
-- **Women Help**: helpline number, officer type, jurisdiction.
-- **Support Centres**: services offered, languages, operating hours.
+- Women's Hostels: rent range, curfew time, occupancy type, meal inclusion.
+- Hospitals: emergency availability, departments, trauma designation.
+- Pharmacies: round-the-clock status, home delivery, inventory notes.
+- Metro: line, operating hours, fare range, dedicated women's coach.
+- Police / Public Support: helpline number, officer designation, jurisdiction.
+- Women Support Centres: services offered, operating hours, contact.
 
-No cross-category field pollution. All values are sourced from `ResourceAttribute` records in the database, never hardcoded.
+All field values are read from `ResourceAttribute` records in the database. No values are hardcoded in the frontend.
 
-### 6-Step Verifiable Provenance
+### Provenance and Evidence
 
-Every claimed fact displays:
-`Claim -> Extracted Value -> Source URL -> Collector ID -> Observed Timestamp -> Verification Status`
+Every displayed claim links to a 6-step evidence chain: claim label, extracted value, source URL, collector ID, extraction timestamp, and verification status. The evidence modal is accessible from every resource card.
 
-### 5-Point Local Support Ecosystem Mesh
+### 5-Point Proximity Mesh
 
-Computes Haversine proximity from each hostel to the nearest metro station, public hospital, 24-hour chemist, and women's police helpdesk.
+For each hostel result, the system computes Haversine distances to the nearest metro station, public hospital, 24-hour pharmacy, and women's police helpdesk. The proximity graph is surfaced as an expandable support chain on each card.
 
-### Freshness Tracking and Conflict Detection
+### Freshness and Conflict Detection
 
-- Freshness tiers: GREEN (under 24h), YELLOW (1-7 days), RED (over 7 days).
-- Detects cross-source discrepancies (e.g. direct provider states 10,000 while directory lists 11,000) and displays both facts side-by-side.
+Attributes are tiered by age: under 24 hours (fresh), 1 to 7 days (ageing), over 7 days (stale). When two collectors report conflicting values for the same field on the same resource, both values are displayed side by side with their respective sources.
 
 ### Live Changes Feed
 
-Genuine data-driven change detection using temporal snapshot diffs. Every row in the feed traces back to a real `ResourceChangeEvent` record with a `collector_id`, `old_value`, `new_value`, and `detected_at` timestamp. No hardcoded rows.
+Tracks `ResourceChangeEvent` records generated by the change detector. Each row in the feed corresponds to a real database record with old value, new value, collector ID, and detection timestamp. No rows are synthesised or hardcoded.
 
-### Real Bright Data Self-Healing
+### Self-Healing Scraper Architecture
 
-- Controlled failure injection drops schema validation to 0%.
-- Clicking **"Run bdata scraper heal"** executes the actual Bright Data CLI command via subprocess (not a simulation).
-- The application validates `returncode == 0` strictly. Any non-zero exit code is reported as a failure with the exact CLI output shown.
-- Subprocess timeout is set to **300 seconds** to allow sufficient time for the AI selector-repair process.
-- The UI reports the exact CLI command, return code, stdout/stderr, and execution duration.
-
-### Scraper Health Center
-
-Live telemetry across all registered collectors: run history, record counts, validation rates, and crawler diagnostics.
-
----
-
-## 3. Registered Bright Data Collectors
-
-| Collector ID | Name | Category | Source Domain | Data Status |
-|---|---|---|---|---|
-| `c_mt1f0ke713h6n32pi4` | Kamla Girls Hostel Extractor | Women's Hostel | `kamlagirlshostel.com` | Live real data / Self-heal target |
-| `c_mt1i5ri4trltbvw66` | Sulekha Lucknow Women Hostels | Women's Hostel (Directory) | `sulekha.com` | Live real data |
-| `c_mt1ftf047f6ulzznq` | UPMRC Lucknow Metro Network | Public Transport | `upmetrorail.com` | Fixture fallback |
-| `c_mt1fujyq16vhxxfg7x` | KGMU and District Public Healthcare | Hospital | `kgmu.org` | Live real data |
-| `c_mt1fuw0q54wsjtyfq` | Apollo Pharmacy 24x7 Chemists | Pharmacy | `apollopharmacy.in` | Fixture fallback |
-| `c_mt1fv0wlyfkwe8z5y` | UP Police Women Power Line 1090 and Sakhi OSC | Women Support | `1090up.in` | Registered real collector |
-| `c_police_up_01` | UP Police Women Help Desks and Thana Network | Police / Public Support | `uppolice.gov.in` | Registered real collector |
-| `c_mt1nlu1w3pkwb2h1i` | Lucknow Metro Operational Stations | Public Transport | `en.wikipedia.org/wiki/Lucknow_Metro` | Live real data |
-| `c_mt1ogapv1t1nhs5rht` | Apollo Hospitals Lucknow 24x7 Emergency | Hospital | `apollohospitals.com` | Live real data |
-| `c_mt1palv71amwtj4yp4` | University of Lucknow Women's Hostels | Women's Hostel | `lkouniv.ac.in` | Live real data |
-| `c_mt1qwsbmqm9fi1vu6` | UP Mahila Kalyan Women Support and Helplines | Women Support | `mahilakalyan.up.nic.in` | Live real data |
-| `c_hostel_sulekha_01` | Sulekha Demo Self-Healing Target | Women's Hostel | `sulekha.com` | Demo target only (not real) |
-
-Collectors marked "Fixture fallback" run against the Bright Data CLI but fall back to a local JSON fixture when the live endpoint returns no data. Collectors marked "Demo target only" are used exclusively for the controlled failure/heal demonstration and do not feed production data.
-
----
-
-## 4. System Architecture
+When a collector's schema validation score drops below threshold, the system invokes the Bright Data CLI:
 
 ```
-                                  +-------------------------------+
-                                  |      Bright Data Cloud        |
-                                  |   (Scraper Studio & Scrapers) |
-                                  +---------------+---------------+
-                                                  | npx @brightdata/cli
-                                                  v
-+----------------------------------------------------------------------------------+
-| HerAccess Ingestion & Verification Pipeline                                      |
-|                                                                                  |
-|  [Collector Runner] --> [Result Parser] --> [Field Normalizer]                   |
-|                                                    |                             |
-|                                                    v                             |
-|  [Conflict Detector] <-- [Category Validator] <-- [Entity Resolver]              |
-|          |                                                                       |
-|          v                                                                       |
-|  [SQLite Database: Resources, Attributes, Evidence, Runs, Changes]               |
-+-----------------------------------------+----------------------------------------+
-                                          |
-                                          v
-+----------------------------------------------------------------------------------+
-| Deterministic Matching & Graph Engine                                            |
-|                                                                                  |
-|  - Natural Language Intent Parser (Regex & Keyword Mapping)                      |
-|  - Haversine 5-Point Geo Mesh (Hostel -> Transit -> Hospital -> Chemist -> Help) |
-|  - Transparent Ranking Engine (Explainable Factor Scoring)                       |
-|  - Freshness Calculator (Green <24h / Yellow 1-7d / Red >7d)                    |
-+-----------------------------------------+----------------------------------------+
-                                          |
-                                          v
-+----------------------------------------------------------------------------------+
-| Frontend UI (Vite + React + TypeScript + Leaflet)                                |
-|                                                                                  |
-|  - Interactive Leaflet Access Graph Map                                          |
-|  - Search Hero with Pre-set Real-World Personas                                  |
-|  - Category-Specific Resource Cards (no cross-category field pollution)          |
-|  - Resource Detail Dossier & 6-Step Evidence Provenance Modal                   |
-|  - Live Changes Feed with Temporal Snapshot Diffs                                |
-|  - Scraper Health Center with Real CLI Self-Healing Panel                        |
-+----------------------------------------------------------------------------------+
+npx @brightdata/cli scraper heal <collector_id> "<prompt>" --auto-approve --json
+```
+
+The subprocess exit code is checked strictly. Exit code 0 is required for a heal to be marked resolved. Any non-zero exit code is reported as a failure with the full CLI stdout and stderr output. The subprocess timeout is 300 seconds.
+
+---
+
+## Architecture
+
+```
+  Bright Data Cloud (Scraper Studio)
+          |
+          | npx @brightdata/cli
+          v
+  Ingestion Pipeline
+    Collector Runner -> Result Parser -> Field Normaliser
+                                              |
+                                              v
+    Conflict Detector <- Category Validator <- Entity Resolver
+          |
+          v
+  SQLite Database
+    Resources, ResourceAttributes, Evidence, CollectionRuns, ResourceChangeEvents
+          |
+          v
+  Matching and Ranking Engine
+    Intent Parser -> Geo Mesh (Haversine) -> Factor Scorer -> Ranked Results
+          |
+          v
+  FastAPI REST API
+          |
+          v
+  React + TypeScript Frontend (Vite)
+    Search, Map (Leaflet), Resource Cards, Evidence Modal,
+    Live Changes Feed, Scraper Health Centre
 ```
 
 ---
 
-## 5. Quick Start
+## Collectors
 
-### Prerequisites
+| Collector ID | Source | Category | Data |
+|---|---|---|---|
+| `c_mt1f0ke713h6n32pi4` | kamlagirlshostel.com | Women's Hostel | Live |
+| `c_mt1i5ri4trltbvw66` | sulekha.com/womens-hostel/lucknow | Women's Hostel (Directory) | Live |
+| `c_mt1ftf047f6ulzznq` | upmetrorail.com | Public Transport | Fixture |
+| `c_mt1fujyq16vhxxfg7x` | kgmu.org | Hospital | Live |
+| `c_mt1fuw0q54wsjtyfq` | apollopharmacy.in | Pharmacy | Fixture |
+| `c_mt1fv0wlyfkwe8z5y` | 1090up.in | Women Support | Live |
+| `c_police_up_01` | uppolice.gov.in | Police / Public Support | Live |
+| `c_mt1nlu1w3pkwb2h1i` | en.wikipedia.org/wiki/Lucknow_Metro | Public Transport | Live |
+| `c_mt1ogapv1t1nhs5rht` | apollohospitals.com/lucknow | Hospital | Live |
+| `c_mt1palv71amwtj4yp4` | lkouniv.ac.in/en/page/hostels | Women's Hostel | Live |
+| `c_mt1qwsbmqm9fi1vu6` | mahilakalyan.up.nic.in | Women Support | Live |
+| `c_hostel_sulekha_01` | sulekha.com | Women's Hostel | Self-healing test target |
+
+Fixture collectors run against the Bright Data CLI and fall back to a local JSON file when the live endpoint returns no usable payload. The self-healing test target (`c_hostel_sulekha_01`) is used only for controlled failure injection and does not feed production data.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Scraping | Bright Data Scraper Studio, `@brightdata/cli` |
+| Backend | Python 3.11, FastAPI, SQLAlchemy, SQLite |
+| Geo | Haversine (custom implementation) |
+| Frontend | React 18, TypeScript, Vite, Leaflet |
+| Styling | Tailwind CSS |
+| Testing | pytest (49 tests) |
+
+---
+
+## Setup
+
+### Requirements
 
 - Python 3.11+
-- Node.js 18+ and npm
+- Node.js 18+
+- npm
 
 ### Backend
 
 ```bash
-# Clone the repository
 git clone https://github.com/siddhiguptas/HerAccess.git
 cd HerAccess
 
-# Install Python dependencies
 pip install -r backend/requirements.txt
 
-# Run automated tests (49 tests covering ingestion, ranking, and self-healing)
+# Run tests
 pytest -v
 
-# Start backend server at http://127.0.0.1:8000
+# Start API server at http://127.0.0.1:8000
 python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -179,48 +157,16 @@ python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```bash
 cd frontend
 
-# Install dependencies
 npm install
 
-# Verify TypeScript build
-npm run build
-
-# Launch development server at http://localhost:5173
+# Start dev server at http://localhost:5173
 npm run dev
 ```
 
 ---
 
-## 6. Demo Script (2.5 Minutes)
+## Data Scope and Limitations
 
-**Step 1 -- Problem and Search (0:00 - 0:30)**
-
-Click the preset scenario: *"I'm a female student moving to Lucknow for college. I need a women's hostel under 12,000 with public transport and healthcare nearby."* Observe the structured intent extraction badge showing city, budget cap, user type, and required categories.
-
-**Step 2 -- Ranked Results and Ranking Explanation (0:30 - 1:00)**
-
-Click **"Why This Result?"** on Kamla Girls Hostel. Walk through the deterministic checkmarks: within requested budget, strictly women-only, KGMU Hospital within 3.5 km, UPMRC Metro within 0.8 km.
-
-**Step 3 -- Evidence Provenance (1:00 - 1:30)**
-
-Click **"View Evidence"** on the starting rent figure. Walk through the 6-step visual provenance diagram linking to collector `c_mt1f0ke713h6n32pi4` and the original website quote.
-
-**Step 4 -- Support Chain (1:30 - 1:50)**
-
-Expand the Support Chain on a hostel card to reveal the nearby emergency network: Hostel -> UPMRC Metro -> KGMU Hospital -> Apollo Pharmacy -> Women Help Desk 1090.
-
-**Step 5 -- Self-Healing Demo (1:50 - 2:30)**
-
-Open the **Scraper Health Center** tab. Click **"Simulate Schema Failure"** to drop validation to 0%. Click **"Run bdata scraper heal"** to invoke the real Bright Data CLI. Observe the exact CLI command, return code, stdout, and execution duration in the output terminal. If the CLI exits 0, the system marks the heal as resolved; any non-zero code is shown as a genuine failure.
-
----
-
-## 7. Limitations and Data Freshness
-
-- **Geographic Scope**: Demonstrated with Lucknow, India. The architecture is parameterised and can be extended to any city by adding target URLs.
-- **Credit-Conscious Integration**: Live data is collected from Kamla Girls Hostel, KGMU Hospital, and Sulekha Hostels. Metro, Apollo Pharmacy, and UP Police 1090 operate on high-fidelity fixture data and are labelled `[FIXTURE DATA]` in the UI.
-- **Public Data**: Information represents publicly published provider data at the time of observation. Curfews and prices should be confirmed directly with providers before any lease is signed.
-
----
-
-**HerAccess is fully implemented, verified with 49/49 passing tests, and ready for judging.**
+- **Geographic scope**: Lucknow, Uttar Pradesh, India. The architecture is city-agnostic and can be extended by registering new collectors against any target city.
+- **Public data**: All information is extracted from publicly accessible websites. Displayed values represent the state of source pages at the time of extraction. Prices, curfew timings, and contact numbers should be verified directly with providers before any decision is made.
+- **Fixture data**: Metro (UPMRC) and pharmacy (Apollo) collectors fall back to fixture files. These are clearly labelled in the UI with a `[FIXTURE DATA]` badge.
