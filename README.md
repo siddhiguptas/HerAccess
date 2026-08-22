@@ -44,7 +44,7 @@ The codebase enforces an explicit dependency direction verified automatically in
 ## 3. How HerAccess Works
 
 ### Step 1: Scraping Primary Sources with Bright Data
-HerAccess scrapes original authoritative pages directly, such as hostel websites, hospital portals, and government sites, using **12 registered Bright Data Scraper Studio collectors**.
+HerAccess scrapes original authoritative pages directly, such as hostel websites, hospital portals, and government sites, using **15 registered Bright Data Scraper Studio collectors**.
 
 Every extracted attribute carries six pieces of metadata: the raw extracted value, the normalized value, the source URL, the collector ID, the extraction timestamp, and a verbatim evidence excerpt from the page. This ensures every claim displayed can be traced directly to its origin.
 
@@ -73,7 +73,7 @@ npx @brightdata/cli scraper heal c_hostel_sulekha_01 \
 - Node.js 18+
 
 ### Step 1: Verify Project Health
-The project includes a single `make` command to validate the entire codebase. This runs all **55 backend pytest cases** (including Bright Data characterization snapshots) and compiles the frontend TypeScript flawlessly.
+The project includes a single `make` command to validate the entire codebase. This runs all **61 backend pytest cases** (including Bright Data characterization snapshots) and compiles the frontend TypeScript flawlessly.
 ```bash
 make all
 ```
