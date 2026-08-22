@@ -24,10 +24,8 @@ export const Navbar: React.FC<Props> = ({
           onClick={() => setActiveTab('navigator')}
           className="flex items-center gap-3.5 cursor-pointer group"
         >
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rosewood-600 via-brand-800 to-rose-700 p-0.5 shadow-md shadow-brand-950/10 group-hover:scale-105 transition-all">
-            <div className="w-full h-full bg-warm-50 rounded-[14px] flex items-center justify-center">
-              <span className="font-serif font-bold text-xl text-rosewood-700 italic">H</span>
-            </div>
+          <div className="w-11 h-11 group-hover:scale-105 transition-transform flex-shrink-0">
+            <img src="/logo.svg" alt="HerAccess Logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">

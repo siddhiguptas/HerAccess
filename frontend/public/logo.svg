@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E11D48" /> <!-- Rose 600 -->
+      <stop offset="100%" stop-color="#BE123C" /> <!-- Rose 700 -->
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F43F5E" /> <!-- Rose 500 -->
+      <stop offset="100%" stop-color="#E11D48" /> <!-- Rose 600 -->
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#BE123C" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle (Soft Rose) -->
+  <circle cx="200" cy="200" r="180" fill="#FFE4E6" /> <!-- Rose 100 -->
+
+  <!-- Location Pin / Shield Hybrid -->
+  <g filter="url(#shadow)">
+    <!-- Base Pin Shape -->
+    <path d="M200 60 C130 60 80 110 80 180 C80 270 200 350 200 350 C200 350 320 270 320 180 C320 110 270 60 200 60 Z" fill="url(#primaryGrad)"/>
+    
+    <!-- Inner Shield for Safety/Verification -->
+    <path d="M200 100 C150 100 120 120 120 120 C120 180 140 240 200 280 C260 240 280 180 280 120 C280 120 250 100 200 100 Z" fill="url(#shieldGrad)"/>
+    
+    <!-- Inner Checkmark (Verified) -->
+    <path d="M160 170 L185 195 L245 135" fill="none" stroke="#FFFFFF" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
