@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const SearchHero: React.FC<Props> = ({ onSearch, isLoading, currentIntent }) => {
-  const [query, setQuery] = useState("Student near Bhoothnath market in Lucknow. Need safe budget hostel under ₹8,000 with meals included.");
+  const [query, setQuery] = useState("");
   const [city, setCity] = useState('Lucknow');
   const [budget, setBudget] = useState<number | undefined>(undefined);
   const [locality, setLocality] = useState('');
