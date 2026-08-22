@@ -26,7 +26,7 @@ async def lifespan(app: FastAPI):
             logger.info("Initial startup: Seeding database from Bright Data collector fixtures...")
             for col in CollectorRunner.get_all_registered_collectors():
                 try:
-                    payload = CollectorRunner.run_collector(col["collector_id"])
+                    payload = CollectorRunner._fixture_runner.run(col["collector_id"], col)
                     run, count, pass_rate = ResultParser.ingest_collector_payload(
                         db, payload, collector_id_override=col["collector_id"]
                     )
