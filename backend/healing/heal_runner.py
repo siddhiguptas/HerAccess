@@ -1,5 +1,4 @@
 import logging
-import subprocess
 import json
 import os
 import time
@@ -211,29 +210,20 @@ class HealRunner:
 
         db_session.commit()
 
-        # Execute Bright Data CLI command
-        cmd = ["npx", "@brightdata/cli", "scraper", "heal", collector_id, prompt, "--auto-approve", "--json"]
-        cmd_str = " ".join(cmd)
+        # Execute Bright Data CLI command via BrightDataClient
+        cmd_str = f"npx @brightdata/cli scraper heal {collector_id} \"{prompt}\" --auto-approve --json"
         REAL_HEAL_STATE["last_cli_command"] = cmd_str
 
-        logger.info(f"Executing Bright Data CLI heal command: {cmd_str}")
+        logger.info(f"Executing Bright Data CLI heal command via client: {cmd_str}")
 
         start_time = time.time()
-        cli_stdout = ""
-        cli_stderr = ""
-        cli_returncode = 0
-
-        try:
-            res = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=300)
-            cli_stdout = res.stdout.strip()
-            cli_stderr = res.stderr.strip()
-            cli_returncode = res.returncode
-        except subprocess.TimeoutExpired:
-            cli_stderr = "CLI command timed out after 300 seconds. Bright Data heal operation did not complete in time."
-            cli_returncode = 1
-        except Exception as e:
-            cli_stderr = str(e)
-            cli_returncode = 1
+        
+        from backend.services.bright_data_client import BrightDataClient
+        result = BrightDataClient.heal_scraper(collector_id, prompt)
+        
+        cli_stdout = result["stdout"].strip()
+        cli_stderr = result["stderr"].strip()
+        cli_returncode = result["exit_code"]
 
         duration = round(time.time() - start_time, 2)
         REAL_HEAL_STATE["last_cli_output"] = cli_stdout or cli_stderr or "CLI execution finished."

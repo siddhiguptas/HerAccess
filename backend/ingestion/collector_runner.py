@@ -187,38 +187,23 @@ class FixtureCollectorRunner(BaseCollectorRunner):
 class BrightDataCollectorRunner(BaseCollectorRunner):
     """
     Live Bright Data Integration Runner.
-    Executes actual Bright Data Scraper Studio runs via CLI `npx @brightdata/cli scraper run`
+    Executes actual Bright Data Scraper Studio runs via CLI
     and falls back safely if network or collector is unavailable.
     """
     def run(self, collector_id: str, col_meta: Dict[str, Any]) -> Dict[str, Any]:
-        import subprocess
-        target_url = col_meta.get("target_url")
-        cmd = ["npx", "@brightdata/cli", "scraper", "run", collector_id]
-        if target_url:
-            cmd.append(target_url)
-
+        from backend.services.bright_data_client import BrightDataClient
         try:
-            logger.info(f"Executing live Bright Data Scraper: {' '.join(cmd)}")
-            res = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=120)
-            if res.returncode == 0 and res.stdout:
-                out = res.stdout.strip()
-                # Locate JSON payload in stdout
-                start_idx = -1
-                for i, c in enumerate(out):
-                    if c in ['[', '{']:
-                        start_idx = i
-                        break
-                if start_idx != -1:
-                    raw_data = json.loads(out[start_idx:])
-                    return {
-                        "collector_id": collector_id,
-                        "target_url": target_url,
-                        "run_id": f"run_{int(datetime.utcnow().timestamp())}",
-                        "timestamp": datetime.utcnow().isoformat() + "Z",
-                        "status": "success",
-                        "records": raw_data if isinstance(raw_data, list) else [raw_data]
-                    }
-            logger.warning(f"Bright Data CLI returned code {res.returncode}: {res.stderr}. Using cached payload.")
+            raw_data = BrightDataClient.run_scraper(collector_id, max_items=10)
+            if raw_data:
+                target_url = col_meta.get("target_url")
+                return {
+                    "collector_id": collector_id,
+                    "target_url": target_url,
+                    "run_id": f"run_{int(datetime.utcnow().timestamp())}",
+                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "status": "success",
+                    "records": raw_data if isinstance(raw_data, list) else [raw_data]
+                }
         except Exception as e:
             logger.warning(f"Live CLI scraper execution failed for {collector_id}: {e}. Using cached payload.")
 
