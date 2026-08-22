@@ -1,20 +1,36 @@
-# HerAccess
+<div align="center">
+  <h1>HerAccess</h1>
+  <p><b>A verified local access and support navigator for women relocating to new cities.</b></p>
+  
+  <p>
+    <a href="#"><img src="https://img.shields.io/badge/Python-3.11+-blue.svg" alt="Python Version" /></a>
+    <a href="#"><img src="https://img.shields.io/badge/React-18-blue.svg" alt="React" /></a>
+    <a href="#"><img src="https://img.shields.io/badge/Architecture-Modular%20Monolith-green.svg" alt="Architecture" /></a>
+    <a href="#"><img src="https://img.shields.io/badge/Powered_by-Bright_Data-orange.svg" alt="Bright Data" /></a>
+  </p>
+</div>
 
-**A verified local access and support navigator for women relocating to new cities.**
+HerAccess aggregates, cross-validates, and continuously monitors accommodations, public healthcare, transit networks, emergency helplines, and support services. It scrapes data from primary public sources using **Bright Data Scraper Studio** and presents it in a single searchable, map-first interface.
 
-HerAccess aggregates, cross-validates, and continuously monitors women's accommodations, public healthcare, transit networks, emergency helplines, and support services — scraped from primary public sources using **Bright Data Scraper Studio** — into a single searchable, map-first interface.
-
-> Built for the **Into the Scrape-Verse Hackathon** (WeMakeDevs × Bright Data) · Aug 2026
+> Built for the **Into the Scrape-Verse Hackathon** (WeMakeDevs x Bright Data)
 
 ---
 
-## 🛠️ Engineering Quality & Architecture
+## 1. The Problem
 
-HerAccess is designed as a **Strictly Layered Modular Monolith**. We avoided microservice bloat to focus on extreme data reliability and maintainability.
+Women relocating for education or employment in Indian cities face fragmented, unverified, and frequently stale information. This information is scattered across dozens of disconnected sources like individual hostel sites, government portals, listing directories, and helpline pages. Each source has different update cycles, different structures, and zero proof of origin.
+
+**HerAccess is built to fill that gap.** It does not use a manually built database. Instead, it uses a live, self-maintaining scraping infrastructure that pulls directly from primary sources, cross-validates every claim, and shows the exact evidence behind every value displayed to the user.
+
+---
+
+## 2. Engineering Quality & Architecture
+
+HerAccess is designed as a **Strictly Layered Modular Monolith**. We avoided microservice complexity to focus on extreme data reliability and maintainability.
 
 ### The Architecture Rule
 The codebase enforces an explicit dependency direction verified automatically in CI via Python AST parsing (`tests/test_architecture.py`):
-`API Routes ➔ Business Services ➔ Domain Logic ➔ Repositories ➔ Database Models`
+`API Routes -> Business Services -> Domain Logic -> Repositories -> Database Models`
 
 ### Key Architectural Decisions
 - **Bright Data Boundary:** The system strictly isolates all Bright Data CLI invocations into a single infrastructure adapter (`BrightDataClient`). Business rules never touch subprocesses.
@@ -24,31 +40,23 @@ The codebase enforces an explicit dependency direction verified automatically in
 
 ---
 
-## The Problem
+## 3. How HerAccess Works
 
-Women relocating for education or employment in Indian cities face fragmented, unverified, and frequently stale information scattered across dozens of disconnected sources — individual hostel sites, government portals, listing directories, and helpline pages — each with different update cycles, different structure, and zero provenance.
+### Step 1: Scraping Primary Sources with Bright Data
+HerAccess scrapes original authoritative pages directly, such as hostel websites, hospital portals, and government sites, using **12 registered Bright Data Scraper Studio collectors**.
 
-**HerAccess is built to fill that gap.** Not by building a database by hand, but by building a live, self-maintaining scraping infrastructure that pulls directly from primary sources, cross-validates every claim, and shows the evidence behind every value displayed to the user.
+Every extracted attribute carries six pieces of metadata: the raw extracted value, the normalized value, the source URL, the collector ID, the extraction timestamp, and a verbatim evidence excerpt from the page. This ensures every claim displayed can be traced directly to its origin.
 
----
+### Step 2: Ingestion, Normalization, and Conflict Detection
+Raw scraper output passes through a deterministic pipeline to standardize prices, curfew timings, and boolean fields. When two independent collectors report different values for the same field on the same resource, HerAccess preserves both values with their sources and surfaces them explicitly in the Conflicts view.
 
-## How HerAccess Works
+### Step 3: Matching, Ranking, and the Proximity Mesh
+Search queries are parsed into a structured intent (city, budget, locality, etc.). Results are ranked by a **fully transparent, deterministic scoring function**. There are no opaque model scores.
 
-### Step 1 — Scraping Primary Sources with Bright Data
-HerAccess does not aggregate from aggregators. It scrapes the original authoritative pages directly — the hostel's own website, the KGMU hospital portal, the UP Police government site, the Lucknow Metro authority site — using **12 registered Bright Data Scraper Studio collectors**.
+For every hostel result, the system computes actual distances to the five nearest ecosystem resources (metro station, public hospital, 24-hour pharmacy, police help desk, and support center) and surfaces them as an expandable Local Support Chain.
 
-Every extracted attribute carries six pieces of metadata: the raw extracted value, the normalised value, the source URL, the collector ID, the extraction timestamp, and a verbatim evidence excerpt from the page — so every claim displayed can be traced directly to its origin.
-
-### Step 2 — Ingestion, Normalisation, and Conflict Detection
-Raw scraper output passes through a deterministic normalisation pipeline to standardise prices, curfew timings, and boolean fields. When two independent collectors report different values for the same field on the same resource, HerAccess preserves both values with their sources and surfaces them explicitly in the Conflicts view.
-
-### Step 3 — Matching, Ranking, and the Proximity Mesh
-Search queries (English/Hinglish) are parsed into a structured intent (city, budget, locality, etc.). Results are ranked by a **fully transparent, deterministic scoring function**. There are no opaque model scores.
-
-For every hostel result, the system computes Haversine distances to the five nearest ecosystem resources — metro station, public hospital, 24-hour pharmacy, police women help desk, and women support centre — and surfaces them as an expandable Local Support Chain.
-
-### Step 4 — Self-Healing Scraper Pipeline
-When a target website changes its HTML structure, the collector begins returning empty or malformed fields. HerAccess detects this through schema validation and automatically generates a problem description, then invokes the Bright Data CLI heal command:
+### Step 4: Self-Healing Scraper Pipeline
+When a target website changes its HTML structure, the collector begins returning empty or malformed fields. HerAccess detects this through schema validation, generates a problem description, and invokes the Bright Data CLI heal command:
 ```bash
 npx @brightdata/cli scraper heal c_hostel_sulekha_01 \
   "Price, curfew, and contact fields stopped extracting after source website restructure." \
@@ -57,25 +65,25 @@ npx @brightdata/cli scraper heal c_hostel_sulekha_01 \
 
 ---
 
-## 🚀 Setup & Validation Workflow
+## 4. Setup & Validation Workflow
 
 ### Requirements
 - Python 3.11+
 - Node.js 18+
 
-### 1. Verify Project Health (The Quality Workflow)
+### Step 1: Verify Project Health
 The project includes a single `make` command to validate the entire codebase. This runs all **55 backend pytest cases** (including Bright Data characterization snapshots) and compiles the frontend TypeScript flawlessly.
 ```bash
 make all
 ```
 
-### 2. Start the Backend API
+### Step 2: Start the Backend API
 ```bash
 pip install -r backend/requirements.txt
 python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-### 3. Start the Frontend
+### Step 3: Start the Frontend
 ```bash
 cd frontend
 npm install
@@ -84,7 +92,7 @@ npm run dev
 
 ---
 
-## Bright Data Collectors (Scraper Studio)
+## 5. Bright Data Collectors
 
 | Collector ID | Target Source | Category | Data |
 |---|---|---|---|
