@@ -45,7 +45,7 @@ class BrightDataClient:
     def heal_scraper(collector_id: str, prompt: str) -> Optional[Dict[str, Any]]:
         """Heals a Bright Data scraper via CLI using AI healing."""
         try:
-            cmd = ["npx", "@brightdata/cli", "scraper", "heal", collector_id, "--prompt", prompt]
+            cmd = ["npx", "@brightdata/cli", "scraper", "heal", collector_id, prompt, "--auto-approve", "--json"]
             logger.info(f"Triggering Real Bright Data Heal: {' '.join(cmd)}")
             
             # Execute with a timeout

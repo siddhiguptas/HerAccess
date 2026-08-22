@@ -210,7 +210,7 @@ class HealRunner:
 
         db_session.commit()
 
-        # Execute Bright Data CLI command via BrightDataClient
+        # The BrightDataClient builds the command for us without `--prompt`.
         cmd_str = f"npx @brightdata/cli scraper heal {collector_id} \"{prompt}\" --auto-approve --json"
         REAL_HEAL_STATE["last_cli_command"] = cmd_str
 

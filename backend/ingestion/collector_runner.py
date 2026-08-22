@@ -94,14 +94,25 @@ COLLECTOR_REGISTRY = [
         "is_secondary_public_source": True
     },
     {
-        "collector_id": "c_mt1ogapv1t1nhs5rht",
-        "aliases": ["c_hospital_apollo_real"],
+        "collector_id": "c_mt4b3w6j7ktueamjw",
+        "aliases": ["c_hospital_apollo_real", "c_mt1ogapv1t1nhs5rht"],
         "name": "Apollo Hospitals Lucknow 24x7 Emergency & Trauma Extractor",
         "category": ResourceCategory.HOSPITAL,
         "target_url": "https://www.apollohospitals.com/hospitals/apollo-hospitals-lucknow",
         "fixture_file": "real_hospital_apollo_run.json",
         "extraction_prompt": "Extract hospital name, address, emergency availability, emergency phone number, contact phone, departments, trauma capabilities, women gynaecology services, and website URL.",
         "is_real_collector": True
+    },
+    {
+        "collector_id": "c_mt4bc7s22pr9uy11mk",
+        "aliases": ["c_hospital_practo_aggregator"],
+        "name": "Practo Lucknow Hospitals Directory Aggregator",
+        "category": ResourceCategory.HOSPITAL,
+        "target_url": "https://www.practo.com/lucknow/hospitals",
+        "fixture_file": "real_practo_hospitals_run.json",
+        "extraction_prompt": "Extract all hospitals in Lucknow: hospital name, full address, locality, city, specialities, emergency availability, contact phone, rating, number of doctors, and source URL.",
+        "is_real_collector": True,
+        "is_directory_source": True
     },
     {
         "collector_id": "c_mt1palv71amwtj4yp4",
@@ -130,6 +141,24 @@ COLLECTOR_REGISTRY = [
         "target_url": "https://www.sulekha.com/hostels/lucknow/womens-hostels",
         "fixture_file": "sulekha_hostels.json",
         "extraction_prompt": "Extract women's hostels in Lucknow including name, address, monthly rent, curfew, facilities, and contact number.",
+        "is_real_collector": False
+    },
+    {
+        "collector_id": "c_bus_stations_01",
+        "name": "UPSRTC Lucknow Bus Stations Extractor",
+        "category": ResourceCategory.PUBLIC_TRANSPORT,
+        "target_url": "https://upsrtc.up.gov.in/bus-stations",
+        "fixture_file": "bus_stations.json",
+        "extraction_prompt": "Extract all major bus terminals in Lucknow.",
+        "is_real_collector": False
+    },
+    {
+        "collector_id": "c_police_stations_02",
+        "name": "Lucknow Police Stations Directory",
+        "category": ResourceCategory.POLICE_OR_PUBLIC_SUPPORT,
+        "target_url": "https://lucknowpolice.up.gov.in/",
+        "fixture_file": "police_stations_extra.json",
+        "extraction_prompt": "Extract police stations in Lucknow.",
         "is_real_collector": False
     }
 ]

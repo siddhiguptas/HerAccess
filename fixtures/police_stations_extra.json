@@ -1,0 +1,42 @@
+{
+  "collector_id": "c_police_stations_02",
+  "target_url": "https://lucknowpolice.up.gov.in/",
+  "category": "police_or_public_support",
+  "records": [
+    {
+      "name": "Gomti Nagar Police Station",
+      "address": "Vibhuti Khand, Gomti Nagar, Lucknow",
+      "locality": "Gomti Nagar",
+      "city": "Lucknow",
+      "contact_phone": "112"
+    },
+    {
+      "name": "Hazratganj Police Station",
+      "address": "Hazratganj, Lucknow",
+      "locality": "Hazratganj",
+      "city": "Lucknow",
+      "contact_phone": "112"
+    },
+    {
+      "name": "Alambagh Police Station",
+      "address": "Alambagh, Lucknow",
+      "locality": "Alambagh",
+      "city": "Lucknow",
+      "contact_phone": "112"
+    },
+    {
+      "name": "Indira Nagar Police Station",
+      "address": "Indira Nagar, Lucknow",
+      "locality": "Indira Nagar",
+      "city": "Lucknow",
+      "contact_phone": "112"
+    },
+    {
+      "name": "Chowk Police Station",
+      "address": "Chowk, Lucknow",
+      "locality": "Chowk",
+      "city": "Lucknow",
+      "contact_phone": "112"
+    }
+  ]
+}

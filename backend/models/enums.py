@@ -49,11 +49,15 @@ REAL_BRIGHT_DATA_COLLECTOR_IDS = {
     "c_mt1f0ke713h6n32pi4",  # Kamla Girls Hostel
     "c_mt1i5ri4trltbvw66",  # Sulekha Lucknow Women Hostels Directory
     "c_mt1ftf047f6ulzznq",  # UPMRC Lucknow Metro
-    "c_mt1fujyq16vhxxfg7x",  # KGMU Healthcare Hospital
+    "c_mt1fujyq16vhxxfg7x",  # KGMU Healthcare Hospital (old)
     "c_mt1fuw0q54wsjtyfq",  # Apollo Pharmacy
     "c_mt1nlu1w3pkwb2h1i",  # Lucknow Metro Wikipedia Scraper Studio
-    "c_mt1ogapv1t1nhs5rht",  # Apollo Hospitals Lucknow Scraper Studio
+    "c_mt1ogapv1t1nhs5rht",  # Apollo Hospitals Lucknow (old)
+    "c_mt4b3w6j7ktueamjw",  # Apollo Hospitals Lucknow (NEW - bdata scraper create)
+    "c_mt4b4q72u4qbj5rma",  # KGMU Hospital (NEW - bdata scraper create)
+    "c_mt4b4cmguuu7ltkq1",  # UP Mahila Kalyan Women Support (NEW - bdata scraper create)
+    "c_mt4bc7s22pr9uy11mk", # Practo Lucknow Hospitals Aggregator (NEW - bdata scraper create)
     "c_mt1palv71amwtj4yp4",  # University of Lucknow Women's Hostels Scraper Studio
-    "c_mt1qwsbmqm9fi1vu6"   # UP Mahila Kalyan Women Support & Emergency Helplines
+    "c_mt1qwsbmqm9fi1vu6",  # UP Mahila Kalyan Women Support & Emergency Helplines (old)
 }
 

@@ -1,12 +1,13 @@
 [
   {
     "hospital_name": "Apollo Hospitals, Lucknow",
-    "address": "QWW2+RPF, Kanpur - Lucknow Rd, Sector B, Bargawan, LDA Colony, Lucknow, Uttar Pradesh 226012",
-    "locality": "QWW2+RPF, Kanpur - Lucknow Rd, Sector B, Bargawan, LDA Colony, Lucknow, Uttar Pradesh 226012",
-    "emergency_availability": "Available 24/7",
+    "full_address": "QWW2+RPF, Kanpur - Lucknow Rd, Sector B, Bargawan, LDA Colony, Lucknow, Uttar Pradesh 226012",
+    "locality": "LDA Colony",
+    "city": "Lucknow",
+    "emergency_24x7": true,
     "emergency_phone": "05226788888",
     "contact_phone": "08069049763",
-    "departments": [
+    "key_departments": [
       "Cardiac Sciences",
       "Oncology",
       "Neurology",
@@ -28,9 +29,8 @@
     ],
     "trauma_capabilities": true,
     "women_gynaecology_services": true,
+    "opd_timings": "24/7",
     "website_url": "https://www.apollohospitals.com/lucknow",
-    "input": {
-      "url": "https://www.apollohospitals.com/hospitals/apollo-hospitals-lucknow"
-    }
+    "source_url": "https://www.apollohospitals.com/hospitals/apollo-hospitals-lucknow"
   }
 ]

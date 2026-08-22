@@ -1,0 +1,96 @@
+[
+  {
+    "hospital_name": "Nirvan Hospital & Post Graduate Institute Of Mental Health And Allied Sciences",
+    "address": "Nirvan Bhawan, Kalyanpur Ring Road, Opp Hotel Vijay Paradise, Khurram Nagar, Lucknow",
+    "locality": "Khurram Nagar",
+    "city": "Lucknow",
+    "emergency_availability": "Number of Ambulances - 2",
+    "rating": 4.5,
+    "number_of_doctors": 4,
+    "source_url": "https://www.practo.com/lucknow/hospital/nirvan-hospital-ismailganj"
+  },
+  {
+    "hospital_name": "Jwala Hospital",
+    "address": "#D-2226, Ring Road, Near Munshi Pulia, Indira Nagar, Lucknow",
+    "locality": "Indira Nagar",
+    "city": "Lucknow",
+    "emergency_availability": "Number of Ambulances - 1",
+    "rating": 4.5,
+    "number_of_doctors": 2,
+    "source_url": "https://www.practo.com/lucknow/clinic/jwala-hospital-indira-nagar-1"
+  },
+  {
+    "hospital_name": "Garg Ophthalmic Centre",
+    "address": "Number B-54, Bans Mandi, Near JC Hotel, Nirala Nagar, Lucknow",
+    "locality": "Nirala Nagar",
+    "city": "Lucknow",
+    "rating": 3.5,
+    "number_of_doctors": 3,
+    "source_url": "https://www.practo.com/lucknow/hospital/garg-ophthalmic-centre-nirala-nagar"
+  },
+  {
+    "hospital_name": "Neera Hospital",
+    "address": "B-2, Aliganj Crossing, Near New Hanuman Mandir, Mahanagar Extension, Lucknow",
+    "locality": "Mahanagar",
+    "city": "Lucknow",
+    "emergency_availability": "Number of Ambulances - 1",
+    "rating": 3.5,
+    "number_of_doctors": 3,
+    "source_url": "https://www.practo.com/lucknow/hospital/neera-hospital-mahanagar-1"
+  },
+  {
+    "hospital_name": "Max Super Speciality Hospital",
+    "address": "Hanemann Chauraha, Gomti Nagar, Viraj Khand, Lucknow",
+    "locality": "Gomti Nagar",
+    "city": "Lucknow",
+    "rating": 4.5,
+    "number_of_doctors": 72,
+    "source_url": "https://www.practo.com/lucknow/hospital/max-super-speciality-hospital-lucknow-viraj-khand"
+  },
+  {
+    "hospital_name": "Cloudnine Hospital",
+    "address": "Plot Number CP-3, Viraj Khand-4, Near Hahnemann Road, Gomti Nagar, Lucknow",
+    "locality": "Gomti Nagar",
+    "city": "Lucknow",
+    "emergency_availability": "Number of Ambulances - 1",
+    "rating": 3.5,
+    "number_of_doctors": 8,
+    "source_url": "https://www.practo.com/lucknow/hospital/cloudnine-hospital-1-gomti-nagar-1"
+  },
+  {
+    "hospital_name": "Radius Joint Surgery Hospital",
+    "address": "2/2, Vishesh Khand 2, Picup Bhawan Road, Near Shaheed Path, Gomti Nagar, Lucknow",
+    "locality": "Gomti Nagar",
+    "city": "Lucknow",
+    "rating": 4.5,
+    "number_of_doctors": 2,
+    "source_url": "https://www.practo.com/lucknow/hospital/radius-joint-surgery-hospital-gomtinagar"
+  },
+  {
+    "hospital_name": "Cloudnine Fertility - IVF Centre",
+    "address": "Plot Number CP-3, Viraj Khand-4, Gomti Nagar, Lucknow",
+    "locality": "Gomti Nagar",
+    "city": "Lucknow",
+    "number_of_doctors": 1,
+    "source_url": "https://www.practo.com/lucknow/hospital/cloudnine-fertility-ivf-centre-gomtinagar"
+  },
+  {
+    "hospital_name": "Charak Hospital",
+    "address": "Hardoi Rd, Near Safed Masjid, Dubagga, Lucknow",
+    "locality": "Dubagga",
+    "city": "Lucknow",
+    "rating": 4.5,
+    "number_of_doctors": 33,
+    "source_url": "https://www.practo.com/lucknow/hospital/charak-hospital-dubagga-1"
+  },
+  {
+    "hospital_name": "Rajendra Nagar Hospital",
+    "address": "74, Rajendra Nagar 2nd Street, Near Navyug Girls College, Lucknow",
+    "locality": "Rajendra Nagar",
+    "city": "Lucknow",
+    "emergency_availability": "Number of Ambulances - 1",
+    "rating": 4.5,
+    "number_of_doctors": 1,
+    "source_url": "https://www.practo.com/lucknow/hospital/rajendra-nagar-hospital-rajendranagar-1"
+  }
+]

@@ -39,13 +39,21 @@ def test_heal_request_state_and_same_collector_id():
     """Verify that executing real heal with successful exit code 0 preserves the SAME collector ID and restores HEALTHY."""
     db = SessionLocal()
     try:
+        client.post("/demo/real/trigger-break?collector_id=c_mt1f0ke713h6n32pi4")
+        
         # Mock subprocess to simulate Bright Data CLI success output
-        mock_cli_result = MagicMock()
-        mock_cli_result.returncode = 0
-        mock_cli_result.stdout = '{"status":"healed","collector_id":"c_mt1f0ke713h6n32pi4","next_step":"bdata scraper run c_mt1f0ke713h6n32pi4"}'
-        mock_cli_result.stderr = ""
+        def mock_subprocess_run(cmd, *args, **kwargs):
+            mock_res = MagicMock()
+            if "run" in cmd:
+                mock_res.returncode = 0
+                mock_res.stdout = '[{"hostel_name": "Recovered Hostel", "monthly_price": 5000, "curfew_time": "10 PM", "address": "Lucknow", "women_only": true, "contact_numbers": ["123"]}]'
+            else:
+                mock_res.returncode = 0
+                mock_res.stdout = '{"status":"healed","collector_id":"c_mt1f0ke713h6n32pi4","next_step":"bdata scraper run c_mt1f0ke713h6n32pi4"}'
+            mock_res.stderr = ""
+            return mock_res
 
-        with patch("subprocess.run", return_value=mock_cli_result):
+        with patch("subprocess.run", side_effect=mock_subprocess_run):
             res = client.post("/demo/real/trigger-heal?collector_id=c_mt1f0ke713h6n32pi4&prompt=Fix+monthly_price+selector")
             assert res.status_code == 200
             data = res.json()

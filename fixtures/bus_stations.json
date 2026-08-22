@@ -1,0 +1,31 @@
+{
+  "collector_id": "c_bus_stations_01",
+  "target_url": "https://upsrtc.up.gov.in/bus-stations",
+  "category": "public_transport",
+  "records": [
+    {
+      "name": "Alambagh Inter State Bus Terminal (ISBT)",
+      "address": "Alambagh, Lucknow, Uttar Pradesh",
+      "locality": "Alambagh",
+      "city": "Lucknow"
+    },
+    {
+      "name": "Kaiserbagh Bus Station",
+      "address": "Kaiserbagh, Lucknow, Uttar Pradesh",
+      "locality": "Kaiserbagh",
+      "city": "Lucknow"
+    },
+    {
+      "name": "Charbagh Bus Station",
+      "address": "Charbagh, Lucknow, Uttar Pradesh",
+      "locality": "Charbagh",
+      "city": "Lucknow"
+    },
+    {
+      "name": "Awadh Bus Station",
+      "address": "Kamta Chauraha, Lucknow, Uttar Pradesh",
+      "locality": "Kamta",
+      "city": "Lucknow"
+    }
+  ]
+}
