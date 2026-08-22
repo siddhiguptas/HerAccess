@@ -26,8 +26,8 @@ class IntentParser:
 
                 Respond ONLY with a valid JSON object matching this schema:
                 {{
-                  "city": "Lucknow",
-                  "target_location": "string or null",
+                  "city": "The major city name (e.g., Lucknow, Delhi)",
+                  "target_location": "string (the specific locality, area, or landmark like Telibagh, Aliganj, Gomti Nagar) or null",
                   "user_type": "female_student or working_woman",
                   "budget_max": number or null,
                   "distance_max_km": number,
@@ -45,10 +45,10 @@ class IntentParser:
                 
                 data = json.loads(raw_text)
                 return ParsedIntent(
-                    city=data.get("city", user_city or "Lucknow"),
+                    city=data.get("city") or user_city or "Lucknow",
                     target_location=data.get("target_location"),
                     user_type=data.get("user_type", "female_student"),
-                    budget_max=data.get("budget_max") or user_budget,
+                    budget_max=data.get("budget_max") if data.get("budget_max") is not None else user_budget,
                     distance_max_km=data.get("distance_max_km", 5.0),
                     required_categories=[ResourceCategory(c) for c in data.get("required_categories", []) if c in ResourceCategory.__members__.values()],
                     preferences=data.get("preferences", {}),
