@@ -96,18 +96,6 @@ const MainApp: React.FC = () => {
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Interactive Verification Testbed (For evaluators and judges) */}
-        <DemoControlPanel
-          onStateChanged={() => {
-            handleSearch(
-              "I'm a female student moving to Lucknow for college. I need a women's hostel under ₹12,000 with public transport and healthcare nearby.",
-              'Lucknow',
-              12000
-            );
-            loadAllResources();
-          }}
-        />
-
         {/* Tab 1: Navigator / Search Interface */}
         {activeTab === 'navigator' && (
           <div className="space-y-6">
@@ -207,15 +195,16 @@ const MainApp: React.FC = () => {
               {/* Left Column: Results List */}
               <div className="lg:col-span-6 space-y-4 max-h-[780px] overflow-y-auto pr-1">
                 {isLoading ? (
-                  <div className="p-16 text-center text-stone-500 font-sans text-sm space-y-3 bg-white rounded-3xl border border-warm-300">
-                    <RefreshCw className="w-6 h-6 animate-spin text-rosewood-700 mx-auto" />
-                    <p className="font-semibold text-stone-800">Verifying live public sources...</p>
-                    <p className="text-xs text-stone-500">Checking accommodations, nearest hospitals, transit schedules, and emergency support network.</p>
+                  <div className="p-16 text-center text-stone-500 font-sans text-sm space-y-3 bg-white rounded-3xl border border-warm-300 shadow-xs">
+                    <RefreshCw className="w-6 h-6 animate-spin text-rosewood-700 mx-auto mb-4" />
+                    <p className="font-semibold text-stone-800 text-base">Verifying live public sources...</p>
+                    <p className="text-stone-500 max-w-sm mx-auto">Checking accommodations, nearest hospitals, transit schedules, and emergency support network.</p>
                   </div>
                 ) : displayedResults.length === 0 ? (
-                  <div className="p-12 text-center bg-white rounded-3xl border border-warm-300 text-stone-600 text-sm space-y-2">
-                    <p className="font-semibold text-stone-800">We couldn't find a verified match here yet.</p>
-                    <p className="text-xs text-stone-500">Try expanding your search area or budget criteria.</p>
+                  <div className="p-16 text-center bg-white rounded-3xl border border-warm-300 text-stone-600 text-sm space-y-3 shadow-xs">
+                    <MapPin className="w-8 h-8 text-warm-400 mx-auto mb-4 opacity-50" />
+                    <p className="font-semibold text-stone-800 text-base">No verified match found here yet.</p>
+                    <p className="text-stone-500 max-w-sm mx-auto">Try adjusting your filters, expanding your search area, or broadening your budget criteria.</p>
                   </div>
                 ) : (
                   displayedResults.map((res) => (
@@ -283,6 +272,19 @@ const MainApp: React.FC = () => {
         onRemoveWatch={handleToggleWatch}
         onSelectEvidence={(ev) => setSelectedEvidence(ev)}
       />
+
+      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 mt-16 mb-8">
+        <DemoControlPanel
+          onStateChanged={() => {
+            handleSearch(
+              "I'm a female student moving to Lucknow for college. I need a women's hostel under ₹12,000 with public transport and healthcare nearby.",
+              'Lucknow',
+              12000
+            );
+            loadAllResources();
+          }}
+        />
+      </div>
 
       {/* Editorial Footer */}
       <footer className="border-t border-warm-300/80 bg-warm-200/50 py-8 text-xs text-stone-600 mt-12">
