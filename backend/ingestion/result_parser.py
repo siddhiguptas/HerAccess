@@ -203,10 +203,16 @@ class ResultParser:
             item_source_url = rec.get("source_url") or source_url
 
             # Resolve coordinates if missing from address/locality
-            if (not lat or not lon) and (locality or address):
+            if (not lat or not lon):
                 from backend.services.geo import GeoService
-                loc_key = locality or address
-                lat, lon = GeoService.resolve_target_coordinates(loc_key, city)
+                
+                # For transport stations, the exact name is more reliable for coordinate resolution than extracted locality
+                if category == ResourceCategory.PUBLIC_TRANSPORT:
+                    lat, lon = GeoService.resolve_target_coordinates(name, city)
+                    
+                if (not lat or not lon) and (locality or address):
+                    loc_key = locality or address
+                    lat, lon = GeoService.resolve_target_coordinates(loc_key, city)
 
             # Contact numbers (support string or list of contacts)
             raw_contacts = rec.get("contact_numbers") or rec.get("contact_phone") or rec.get("contact") or rec.get("phone")
