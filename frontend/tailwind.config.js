@@ -45,6 +45,9 @@ export default {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
       }
     },
   },
