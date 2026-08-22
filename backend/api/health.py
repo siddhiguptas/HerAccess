@@ -105,7 +105,7 @@ def trigger_collector_run(collector_id: str, db: Session = Depends(get_db)):
     """Manually trigger a Bright Data collector run and ingest data."""
     try:
         payload = CollectorRunner.run_collector(collector_id)
-        run, count, pass_rate = ResultParser.ingest_collector_payload(db, payload)
+        run, count, pass_rate = ResultParser.ingest_collector_payload(db, payload, collector_id_override=collector_id)
         return {
             "message": f"Collector {collector_id} executed successfully.",
             "records_ingested": count,

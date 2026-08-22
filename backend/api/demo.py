@@ -122,7 +122,9 @@ def trigger_simulated_break(req: DemoTriggerBreakRequest, db: Session = Depends(
     DEMO_STATE["healing_in_progress"] = False
 
     broken_payload = CollectorRunner.run_collector(req.collector_id)
-    run, count, pass_rate = ResultParser.ingest_collector_payload(db, broken_payload, is_demo_run=True)
+    run, count, pass_rate = ResultParser.ingest_collector_payload(
+        db, broken_payload, collector_id_override=req.collector_id, is_demo_run=True
+    )
 
     return {
         "status": "broken",
@@ -172,6 +174,8 @@ def reset_demo_state(db: Session = Depends(get_db)):
 
     for col in CollectorRunner.get_all_registered_collectors():
         payload = CollectorRunner.run_collector(col["collector_id"])
-        ResultParser.ingest_collector_payload(db, payload, is_demo_run=True)
+        ResultParser.ingest_collector_payload(
+            db, payload, collector_id_override=col["collector_id"], is_demo_run=True
+        )
 
     return {"message": "Demo state reset. All collectors healthy."}

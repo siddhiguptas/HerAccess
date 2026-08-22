@@ -27,7 +27,9 @@ async def lifespan(app: FastAPI):
             for col in CollectorRunner.get_all_registered_collectors():
                 try:
                     payload = CollectorRunner.run_collector(col["collector_id"])
-                    run, count, pass_rate = ResultParser.ingest_collector_payload(db, payload)
+                    run, count, pass_rate = ResultParser.ingest_collector_payload(
+                        db, payload, collector_id_override=col["collector_id"]
+                    )
                     logger.info(f"Ingested {count} records from {col['collector_id']} (pass rate: {pass_rate*100:.1f}%)")
                 except Exception as e:
                     logger.error(f"Error ingesting fixture {col['collector_id']}: {e}")
