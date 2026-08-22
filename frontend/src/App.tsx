@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { AppProvider, useAppContext } from './context/AppContext';
 import {
   SearchResponse,
   ResourceDetail,
@@ -21,55 +22,27 @@ import {
   Building2, Compass, CheckCircle2, RefreshCw, MapPin
 } from 'lucide-react';
 
-export const App: React.FC = () => {
+const MainApp: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavTab>('navigator');
-  const [searchResponse, setSearchResponse] = useState<SearchResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedResource, setSelectedResource] = useState<ResourceDetail | null>(null);
-  const [viewingDetailResource, setViewingDetailResource] = useState<ResourceDetail | null>(null);
-  const [selectedEvidence, setSelectedEvidence] = useState<EvidenceCard | null>(null);
-  const [watchedIds, setWatchedIds] = useState<number[]>(() => {
-    try {
-      const saved = localStorage.getItem('heraccess_watched_ids');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
   const [isWatchlistOpen, setIsWatchlistOpen] = useState(false);
-  const [allResources, setAllResources] = useState<ResourceDetail[]>([]);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
+  
+  const {
+    searchResponse,
+    isLoading,
+    selectedResource,
+    setSelectedResource,
+    viewingDetailResource,
+    setViewingDetailResource,
+    selectedEvidence,
+    setSelectedEvidence,
+    watchedIds,
+    handleToggleWatch,
+    allResources,
+    handleSearch,
+    loadAllResources
+  } = useAppContext();
 
-  const sessionId = 'session_demo_user_01';
-
-  const handleSearch = async (
-    query: string,
-    city: string = 'Lucknow',
-    budget?: number,
-    locality?: string
-  ) => {
-    try {
-      setIsLoading(true);
-      const res = await api.search(query, city, budget, locality);
-      setSearchResponse(res);
-      if (res.primary_results.length > 0) {
-        setSelectedResource(res.primary_results[0]);
-      }
-    } catch (err) {
-      console.error('Search failed:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const loadAllResources = async () => {
-    try {
-      const list = await api.getResources();
-      setAllResources(list);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     // Initial search on mount
@@ -81,25 +54,8 @@ export const App: React.FC = () => {
     loadAllResources();
   }, []);
 
-  const handleToggleWatch = async (id: number) => {
-    let next: number[];
-    if (watchedIds.includes(id)) {
-      next = watchedIds.filter((x) => x !== id);
-      try {
-        await api.removeFromWatchlist(sessionId, id);
-      } catch (e) {}
-    } else {
-      next = [...watchedIds, id];
-      try {
-        await api.addToWatchlist(sessionId, id);
-      } catch (e) {}
-    }
-    setWatchedIds(next);
-    localStorage.setItem('heraccess_watched_ids', JSON.stringify(next));
-  };
-
   // Combine primary search results and nearby ecosystem for the map
-  const mapResources = React.useMemo(() => {
+  const mapResources = useMemo(() => {
     if (!searchResponse) return allResources;
     const combined: ResourceDetail[] = [...searchResponse.primary_results];
     Object.values(searchResponse.nearby_support_ecosystem).forEach((items) => {
@@ -108,14 +64,14 @@ export const App: React.FC = () => {
     return combined;
   }, [searchResponse, allResources]);
 
-  const displayedResults = React.useMemo(() => {
+  const displayedResults = useMemo(() => {
     if (!searchResponse) return [];
     if (selectedCategoryFilter === 'all') return searchResponse.primary_results;
     return mapResources.filter((r) => r.category === selectedCategoryFilter);
   }, [searchResponse, selectedCategoryFilter, mapResources]);
 
   // Dynamically calculated category counts strictly based on runtime search & ecosystem response
-  const categoryCounts = React.useMemo(() => {
+  const categoryCounts = useMemo(() => {
     return {
       all: searchResponse?.primary_results.length || 0,
       public_transport: mapResources.filter((r) => r.category === 'public_transport').length,
@@ -126,7 +82,7 @@ export const App: React.FC = () => {
     };
   }, [searchResponse, mapResources]);
 
-  const watchedResourcesList = React.useMemo(() => {
+  const watchedResourcesList = useMemo(() => {
     return mapResources.filter((r) => watchedIds.includes(r.id));
   }, [mapResources, watchedIds]);
 
@@ -348,3 +304,9 @@ export const App: React.FC = () => {
     </div>
   );
 };
+
+export const App: React.FC = () => (
+  <AppProvider>
+    <MainApp />
+  </AppProvider>
+);
