@@ -190,6 +190,21 @@ class HealingEvent(Base):
 
     collector = relationship("Collector", back_populates="healing_events")
 
+class CoverageExpansionJob(Base):
+    __tablename__ = "coverage_expansion_jobs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    locality = Column(String(256), nullable=False)
+    city = Column(String(128), default="Lucknow", nullable=False)
+    category = Column(String(128), nullable=True)  # optional category filter
+    status = Column(String(50), default="pending", nullable=False, index=True)  # pending, collecting, processing, verifying, completed, failed
+    records_found = Column(Integer, default=0)
+    records_accepted = Column(Integer, default=0)
+    error_message = Column(Text, nullable=True)
+    bright_data_collector_id = Column(String(128), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    completed_at = Column(DateTime, nullable=True)
+
 class UserPreferences(Base):
     __tablename__ = "user_preferences"
 

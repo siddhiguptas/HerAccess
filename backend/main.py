@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.models.database import init_db, SessionLocal
-from backend.api import search, resources, watch, changes, health, demo
+from backend.api import search, resources, watch, changes, health, demo, coverage
 from backend.ingestion.collector_runner import CollectorRunner
 from backend.ingestion.result_parser import ResultParser
 
@@ -90,6 +90,7 @@ app.include_router(watch.router)
 app.include_router(changes.router)
 app.include_router(health.router)
 app.include_router(demo.router)
+app.include_router(coverage.router)
 
 @app.get("/")
 def root():

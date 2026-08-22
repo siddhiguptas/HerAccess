@@ -7,10 +7,14 @@ logger = logging.getLogger("heraccess.bright_data_client")
 
 class BrightDataClient:
     @staticmethod
-    def run_scraper(collector_id: str, is_demo_run: bool = False, max_items: int = 10) -> Optional[Any]:
+    def run_scraper(collector_id: str, is_demo_run: bool = False, max_items: int = 10, target_url: Optional[str] = None) -> Optional[Any]:
         """Runs a Bright Data scraper via CLI and returns the JSON output."""
         try:
-            cmd = ["npx", "@brightdata/cli", "scraper", "run", collector_id, "--format", "json"]
+            cmd = ["npx", "@brightdata/cli", "scraper", "run", collector_id]
+            if target_url:
+                cmd.append(target_url)
+            cmd.extend(["--format", "json"])
+            
             if is_demo_run:
                 cmd.extend(["--limit", "2"])
             elif max_items:
