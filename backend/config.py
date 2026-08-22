@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     
     # Bright Data Integration
-    # When True, all data is loaded deterministically from structured fixtures without consuming Bright Data credits.
-    BRIGHT_DATA_USE_FIXTURES: bool = True
+    # When False, executes real Scraper Studio CLI commands. When True, falls back to deterministic local fixtures.
+    BRIGHT_DATA_USE_FIXTURES: bool = False
     BRIGHT_DATA_API_KEY: str = ""
     BRIGHT_DATA_ZONE: str = ""
     BRIGHT_DATA_FIXTURES_DIR: str = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fixtures"))
