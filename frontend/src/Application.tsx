@@ -17,6 +17,7 @@ import { ChangesFeed } from './components/ChangesFeed';
 import { WatchlistDrawer } from './components/WatchlistDrawer';
 import { DemoControlPanel } from './components/DemoControlPanel';
 import { ResourceDetailModal } from './components/ResourceDetailModal';
+import { CoverageExpansionPanel } from './components/CoverageExpansionPanel';
 import {
   Sparkles, Train, Stethoscope, Pill, Shield, HeartHandshake,
   Building2, Compass, CheckCircle2, RefreshCw, MapPin
@@ -211,11 +212,47 @@ const MainApp: React.FC = () => {
                     <p className="text-stone-500 max-w-sm mx-auto">Checking accommodations, nearest hospitals, transit schedules, and emergency support network.</p>
                   </div>
                 ) : displayedResults.length === 0 ? (
-                  <div className="p-16 text-center bg-white rounded-3xl border border-warm-300 text-stone-600 text-sm space-y-3 shadow-xs">
-                    <MapPin className="w-8 h-8 text-warm-400 mx-auto mb-4 opacity-50" />
-                    <p className="font-semibold text-stone-800 text-base">No verified match found here yet.</p>
-                    <p className="text-stone-500 max-w-sm mx-auto">Try adjusting your filters, expanding your search area, or broadening your budget criteria.</p>
-                  </div>
+                  (() => {
+                    const isHostelSearch = !searchResponse?.intent?.required_categories || 
+                                          searchResponse.intent.required_categories.length === 0 || 
+                                          searchResponse.intent.required_categories.includes('women_hostel');
+                    const isGlobalEmpty = !searchResponse || searchResponse.primary_results.length === 0;
+
+                    if (isHostelSearch && isGlobalEmpty) {
+                      return (
+                        <CoverageExpansionPanel
+                          locality={searchResponse?.intent?.target_location || searchResponse?.intent?.raw_location || 'Lucknow'}
+                          city={searchResponse?.intent?.city || 'Lucknow'}
+                          onExpansionComplete={() => {
+                            // Re-run the search to pick up newly ingested resources
+                            if (searchResponse?.intent) {
+                              handleSearch(
+                                `Resources near ${searchResponse.intent.target_location || searchResponse.intent.raw_location || 'Lucknow'}`,
+                                searchResponse.intent.city || 'Lucknow',
+                                searchResponse.intent.budget_max,
+                                searchResponse.intent.target_location
+                              );
+                            }
+                            loadAllResources();
+                          }}
+                        />
+                      );
+                    } else {
+                      const emptyCategoryName = selectedCategoryFilter !== 'all' 
+                        ? selectedCategoryFilter.replace(/_/g, ' ') 
+                        : (searchResponse?.intent?.required_categories?.join(', ') || 'resources');
+                        
+                      return (
+                        <div className="text-center py-24 px-6 bg-white rounded-3xl border border-warm-200">
+                          <MapPin className="w-12 h-12 text-warm-300 mx-auto mb-4" />
+                          <h3 className="text-xl font-bold text-stone-900 mb-2">No verified results</h3>
+                          <p className="text-stone-500 max-w-sm mx-auto">
+                            We couldn't find any verified {emptyCategoryName} matching your criteria. Try adjusting your search area or filters.
+                          </p>
+                        </div>
+                      );
+                    }
+                  })()
                 ) : (
                   displayedResults.map((res) => (
                     <ResourceCard

@@ -152,5 +152,21 @@ export const api = {
     });
     if (!res.ok) throw new Error(await res.text());
     return res.json();
+  },
+
+  expandCoverage: async (locality: string, city: string = 'Lucknow', category?: string): Promise<any> => {
+    const res = await fetch(`${API_BASE}/coverage/expand`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ locality, city, category })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+
+  getCoverageJobStatus: async (jobId: number): Promise<any> => {
+    const res = await fetch(`${API_BASE}/coverage/jobs/${jobId}`);
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
   }
 };
