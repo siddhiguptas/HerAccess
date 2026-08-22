@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, IndianRupee, ArrowRight, Compass, Sparkles } from 'lucide-react';
+import { Search, MapPin, ArrowRight, Compass, Sparkles } from 'lucide-react';
 import { ParsedIntent } from '../types';
 
 interface Props {
@@ -47,17 +47,6 @@ export const SearchHero: React.FC<Props> = ({ onSearch, isLoading, currentIntent
               value={city}
               onChange={(e) => setCity(e.target.value)}
               className="bg-transparent text-stone-800 focus:outline-none w-20 font-semibold"
-            />
-          </div>
-
-          <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-warm-200 text-xs text-stone-600 shadow-2xs flex-1 md:flex-none">
-            <IndianRupee className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-            <input
-              type="number"
-              value={budget !== undefined ? budget : (currentIntent?.budget_max || '')}
-              onChange={(e) => setBudget(e.target.value ? Number(e.target.value) : undefined)}
-              placeholder="Auto"
-              className="bg-transparent text-stone-800 focus:outline-none w-16 font-semibold"
             />
           </div>
 
