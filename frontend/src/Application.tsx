@@ -193,8 +193,18 @@ const MainApp: React.FC = () => {
             {/* Split View: Left List Cards / Right Interactive Map */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               {/* Left Column: Results List */}
-              <div className="lg:col-span-6 space-y-4 max-h-[780px] overflow-y-auto pr-1">
-                {isLoading ? (
+              <div className="lg:col-span-6 flex flex-col h-[720px]">
+                <div className="flex items-center justify-between mb-4 px-1">
+                  <h2 className="text-lg font-bold text-stone-900 tracking-tight flex items-center gap-2">
+                    Verified Results
+                    <span className="px-2 py-0.5 rounded-full bg-warm-200 text-stone-700 text-xs font-semibold">
+                      {displayedResults.length}
+                    </span>
+                  </h2>
+                </div>
+                
+                <div className="space-y-4 overflow-y-auto pr-2 pb-8 flex-1 scrollbar-thin scrollbar-thumb-warm-300 scrollbar-track-transparent">
+                  {isLoading ? (
                   <div className="p-16 text-center text-stone-500 font-sans text-sm space-y-3 bg-white rounded-3xl border border-warm-300 shadow-xs">
                     <RefreshCw className="w-6 h-6 animate-spin text-rosewood-700 mx-auto mb-4" />
                     <p className="font-semibold text-stone-800 text-base">Verifying live public sources...</p>
@@ -220,6 +230,7 @@ const MainApp: React.FC = () => {
                     />
                   ))
                 )}
+                </div>
               </div>
 
               {/* Right Column: Interactive Map */}

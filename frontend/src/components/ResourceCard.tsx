@@ -31,6 +31,13 @@ export const ResourceCard: React.FC<Props> = ({
 }) => {
   const [showSupportChain, setShowSupportChain] = useState(false);
   const [showWhyResult, setShowWhyResult] = useState(false);
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (isSelected && cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [isSelected]);
 
   const ratingAttr = resource.attributes.find((a) => a.field_name === 'rating');
 
@@ -49,6 +56,7 @@ export const ResourceCard: React.FC<Props> = ({
 
   return (
     <div
+      ref={cardRef}
       onClick={onSelect}
       className={`rounded-2xl border transition-all duration-200 cursor-pointer overflow-hidden ${
         isSelected
