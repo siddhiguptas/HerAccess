@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="./frontend/public/logo.svg" alt="HerAccess Logo" width="120" />
   <h1>HerAccess</h1>
   <p><b>A verified local access and support navigator for women relocating to new cities.</b></p>
   
