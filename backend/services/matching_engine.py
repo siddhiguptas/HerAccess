@@ -36,6 +36,11 @@ class MatchingEngine:
                 lat, lon = GeoService.resolve_target_coordinates(res.locality or res.address or res.name, res.city or intent.city)
             dist_km = GeoService.haversine_distance(target_lat, target_lon, lat, lon)
 
+            # Strict Locality Enforcement: If a specific location was requested and resolved, exclude resources outside the radius
+            if getattr(intent, 'location_resolved', False) and intent.target_location:
+                if dist_km > (intent.distance_max_km or 5.0):
+                    continue
+
             # Build attribute provenance list & extract map of normalized attributes
             attributes_provenance, evidence_cards = ResourceService._build_attributes_and_evidence(res)
             attr_map: Dict[str, Any] = {a.field_name: a.normalized_value for a in attributes_provenance}
@@ -135,7 +140,8 @@ class MatchingEngine:
             )
             results.append(detail)
 
-        results.sort(key=lambda r: r.match_score or 0.0, reverse=True)
+        # Primary sort by Match Score (transparent points). Tie-breaker by proximity (closest first)
+        results.sort(key=lambda r: (r.match_score or 0.0, -r.distance_km), reverse=True)
 
         # 3. Fetch Nearby Support Ecosystem
         ecosystem: Dict[str, List[ResourceDetail]] = {}
@@ -149,6 +155,12 @@ class MatchingEngine:
                 r_lat = r.latitude or target_lat
                 r_lon = r.longitude or target_lon
                 r_dist = GeoService.haversine_distance(target_lat, target_lon, r_lat, r_lon)
+
+                # Strict Locality Enforcement for Ecosystem
+                if getattr(intent, 'location_resolved', False) and intent.target_location:
+                    # Allow a slightly larger radius for ecosystem support (e.g. 8km) so users can find the nearest hospital/transit even if it's slightly outside the hostel radius
+                    if r_dist > (intent.distance_max_km or 5.0) + 3.0:
+                        continue
 
                 r_attrs, r_evs = ResourceService._build_attributes_and_evidence(r)
 
@@ -176,6 +188,9 @@ class MatchingEngine:
                     match_score=100.0,
                     has_conflicts=False
                 ))
+            
+            # Sort ecosystem purely by proximity to the target location
+            cat_details.sort(key=lambda x: x.distance_km)
             ecosystem[cat.value] = cat_details
 
         execution_ms = round((time.time() - start_time) * 1000, 2)

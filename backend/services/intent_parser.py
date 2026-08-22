@@ -117,13 +117,19 @@ class IntentParser:
             user_type = "female_student"
 
         # 5. Required Categories & Nearby Ecosystem
-        categories = [ResourceCategory.WOMEN_HOSTEL] # default anchor
+        has_hostel_req = any(term in q_lower for term in ["hostel", "pg", "accommodation", "stay", "room", "rent", "living", "paying guest"])
         has_transport_req = any(term in q_lower for term in ["transport", "metro", "bus", "station", "commute", "transit"])
         has_hospital_req = any(term in q_lower for term in ["hospital", "doctor", "health", "healthcare", "clinic", "medical", "emergency", "trauma"])
         has_pharmacy_req = any(term in q_lower for term in ["pharmacy", "chemist", "medicine", "store"])
         has_police_req = any(term in q_lower for term in ["police", "security", "help desk", "safety", "patrol"])
         has_support_req = any(term in q_lower for term in ["support", "helpline", "1090", "sakhi", "one stop", "ngo"])
 
+        categories = []
+        
+        # Order categories based on explicit requests
+        if has_hostel_req or not any([has_transport_req, has_hospital_req, has_pharmacy_req, has_police_req, has_support_req]):
+            categories.append(ResourceCategory.WOMEN_HOSTEL)
+            
         if has_transport_req:
             categories.append(ResourceCategory.PUBLIC_TRANSPORT)
         if has_hospital_req:
