@@ -37,10 +37,12 @@ export default {
           600: '#6e1d32',
           700: '#541525',
           800: '#3c0d19',
+          900: '#260710',
+          950: '#150308',
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'Menlo', 'monospace'],
       }
@@ -48,4 +50,3 @@ export default {
   },
   plugins: [],
 }
-
