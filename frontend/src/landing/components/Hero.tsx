@@ -46,7 +46,6 @@ export const Hero: React.FC = () => {
           {/* Visual Side */}
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
             <div className="relative rounded-[2rem] bg-white border border-warm-200 shadow-2xl overflow-hidden aspect-[4/3] md:aspect-[4/3] lg:aspect-[4/3]">
-              {/* Replace with actual application preview composition or hero image */}
               <img 
                 src="/hero-girl.png" 
                 alt="Confident woman navigating the city" 
@@ -55,7 +54,7 @@ export const Hero: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 to-transparent mix-blend-multiply" />
               
               {/* Floating Verification Badge */}
-              <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-warm-100 flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+              <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-warm-100 flex items-center gap-4 transition-transform hover:-translate-y-1 duration-300">
                 <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0">
                   <Shield className="w-6 h-6 text-emerald-600" />
                 </div>
