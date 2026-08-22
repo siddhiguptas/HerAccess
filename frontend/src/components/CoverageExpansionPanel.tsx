@@ -87,11 +87,12 @@ export const CoverageExpansionPanel: React.FC<Props> = ({ locality, city, onExpa
         </div>
         <div className="space-y-2">
           <h3 className="text-lg font-bold text-stone-900 tracking-tight">
-            Limited verified coverage
+            Crafting custom results for you
           </h3>
           <p className="text-sm text-stone-600 max-w-md mx-auto leading-relaxed">
-            We don't have enough verified resources for <strong className="text-stone-900">{locality}, {city}</strong> yet.
-            Fresh public sources can be collected and verified before appearing on the map.
+            Hey! We don't have enough verified resources for <strong className="text-stone-900">{locality}, {city}</strong> yet, but we are crafting a custom result for you based on the area you searched.
+            <br/><br/>
+            Expand live coverage manually below, or just visit after some time once our automated systems populate this new area!
           </p>
         </div>
         <button

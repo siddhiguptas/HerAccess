@@ -110,4 +110,20 @@ npm run dev
 | `c_mt1qwsbmqm9fi1vu6` | mahilakalyan.up.nic.in | Women Support | Live |
 | `c_hostel_sulekha_01` | sulekha.com | Women's Hostel | Self-healing test target |
 
-*(Note: Fixture fallbacks are included to ensure seamless demo continuity when internet or Bright Data limits are reached. These are visibly badged in the UI as `[FIXTURE DATA]`.)*
+---
+
+## 6. Future Roadmap (Automation & Scalability)
+
+To scale HerAccess beyond the hackathon environment and into a fully autonomous, self-maintaining platform, the following architectural enhancements are planned:
+
+### Zero-Touch Provisioning (Bright Data API Integration)
+Instead of manually creating Scraper Studio collectors, future versions of HerAccess will feature **Zero-Touch Provisioning**. An administrator simply inputs their Bright Data API key into the HerAccess dashboard. The backend will use Bright Data's management APIs to automatically deploy and configure the necessary scraper templates (Hostels, Hospitals, Transport) directly into the administrator's account. This means infrastructure scales instantly for any new deployment.
+
+### Automated Data Refresh (Cron Jobs)
+Currently, data is fetched either at startup or via user-initiated "Live Coverage Expansion." The future architecture includes a scheduled cron job (via Celery or AWS EventBridge) that runs weekly. This background worker will automatically trigger all Bright Data Scraper Studio collectors, ingest the results through our deterministic parsing pipeline, update the SQLite/PostgreSQL database, and update the "last observed" freshness badges—entirely without human intervention.
+
+### Hyper-Local Ecosystem Expansion
+We plan to pre-populate the database with comprehensive maps of major educational and corporate hubs in Lucknow (e.g., Gomti Nagar, Aliganj, Indira Nagar). New scraper templates will be built to specifically target:
+- **Major Coaching Institutes** (FIITJEE, Aakash, Allen, etc.)
+- **Supermarkets & Grocery Stores**
+When a female student searches for an accommodation, HerAccess will mathematically calculate and map the exact proximity of the hostel to her specific coaching institute and the nearest grocery store, further enriching the Local Support Chain mesh.
