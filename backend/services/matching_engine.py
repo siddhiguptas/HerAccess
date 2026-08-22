@@ -1,3 +1,4 @@
+
 import time
 from typing import List, Dict, Any, Optional
 from backend.models.database import Resource, ResourceAttribute, Evidence, Conflict
@@ -9,6 +10,7 @@ from backend.models.enums import ResourceCategory, FreshnessLevel, VerificationS
 from backend.services.geo import GeoService
 from backend.services.ranking import TransparentRankingEngine
 from backend.verification.freshness import FreshnessCalculator
+from backend.services.resource_service import ResourceService
 
 class MatchingEngine:
     @classmethod
@@ -20,10 +22,9 @@ class MatchingEngine:
 
         # 2. Query Primary Candidates (Women Hostels as anchor, or specified category)
         primary_cat = intent.required_categories[0] if intent.required_categories else ResourceCategory.WOMEN_HOSTEL
-        primary_candidates = db_session.query(Resource).filter(
-            Resource.category == primary_cat,
-            Resource.is_active == True
-        ).all()
+        from backend.repositories.resource_repository import ResourceRepository
+        repo = ResourceRepository(db_session)
+        primary_candidates = repo.get_active_by_category(primary_cat)
 
         results: List[ResourceDetail] = []
 
@@ -36,52 +37,16 @@ class MatchingEngine:
             dist_km = GeoService.haversine_distance(target_lat, target_lon, lat, lon)
 
             # Build attribute provenance list & extract map of normalized attributes
-            attributes_provenance: List[AttributeProvenance] = []
-            evidence_cards: List[EvidenceCard] = []
-            attr_map: Dict[str, Any] = {}
+            attributes_provenance, evidence_cards = ResourceService._build_attributes_and_evidence(res)
+            attr_map: Dict[str, Any] = {a.field_name: a.normalized_value for a in attributes_provenance}
+            
             most_recent_observed = res.updated_at
-
-            for attr in res.attributes:
-                freshness = FreshnessCalculator.calculate_freshness(attr.observed_at)
-                attr_map[attr.field_name] = attr.normalized_value
-
-                if attr.observed_at and attr.observed_at > most_recent_observed:
-                    most_recent_observed = attr.observed_at
-
-                prov = AttributeProvenance(
-                    field_name=attr.field_name,
-                    raw_value=attr.raw_value,
-                    normalized_value=attr.normalized_value,
-                    source_url=attr.source_url,
-                    source_domain=attr.source_domain,
-                    evidence_text=attr.evidence_text,
-                    observed_at=attr.observed_at,
-                    collector_id=attr.collector_id,
-                    verification_status=attr.verification_status,
-                    freshness=freshness
-                )
-                attributes_provenance.append(prov)
-
-                # Evidence Card
-                if attr.evidence_text:
-                    card = EvidenceCard(
-                        field_name=attr.field_name,
-                        claimed_value=attr.normalized_value or attr.raw_value,
-                        evidence_quote=attr.evidence_text,
-                        source_url=attr.source_url,
-                        source_domain=attr.source_domain,
-                        observed_at=attr.observed_at,
-                        verification_status=attr.verification_status,
-                        freshness_level=freshness,
-                        collector_id=attr.collector_id or "c_unknown"
-                    )
-                    evidence_cards.append(card)
+            for a in attributes_provenance:
+                if a.observed_at and a.observed_at > most_recent_observed:
+                    most_recent_observed = a.observed_at
 
             # Check if has unresolved conflicts
-            conflict_count = db_session.query(Conflict).filter(
-                Conflict.resource_id == res.id,
-                Conflict.status == "unresolved"
-            ).count()
+            conflict_count = repo.get_unresolved_conflict_count(res.id)
 
             # Build Local Support Chain
             chain_dicts = GeoService.build_local_support_chain(db_session, lat, lon, res.id)
@@ -105,13 +70,10 @@ class MatchingEngine:
             res_freshness = FreshnessCalculator.calculate_freshness(most_recent_observed)
 
             # Hard Filters enforcement:
-            # 1. Budget Hard filter: If user has explicitly specified budget, exclude items whose monthly_price strictly exceeds budget
             monthly_price = attr_map.get("monthly_price")
             if intent.budget_max and monthly_price and monthly_price > intent.budget_max:
-                # If price is known and exceeds budget, skip from primary matches
                 continue
 
-            # 2. Women-Only Hard filter: If intent requires women_only, exclude confirmed mixed/co-ed places
             if intent.preferences.get("women_only") and attr_map.get("women_only") is False:
                 continue
 
@@ -124,7 +86,6 @@ class MatchingEngine:
 
             res_ver_status = VerificationStatus.HIGH if has_direct_source else (VerificationStatus.MEDIUM if is_sulekha_dir else VerificationStatus.HIGH)
 
-            # Evaluate Ranking Score and Why This Result Factors
             match_score, why_factors = TransparentRankingEngine.evaluate_resource(
                 resource_attributes=attr_map,
                 distance_km=dist_km,
@@ -174,18 +135,14 @@ class MatchingEngine:
             )
             results.append(detail)
 
-        # Sort results by match score descending
         results.sort(key=lambda r: r.match_score or 0.0, reverse=True)
 
-        # 3. Fetch Nearby Support Ecosystem (all other categories for map visualization)
+        # 3. Fetch Nearby Support Ecosystem
         ecosystem: Dict[str, List[ResourceDetail]] = {}
         for cat in ResourceCategory:
             if cat == primary_cat:
                 continue
-            cat_resources = db_session.query(Resource).filter(
-                Resource.category == cat,
-                Resource.is_active == True
-            ).all()
+            cat_resources = repo.get_active_by_category(cat)
 
             cat_details = []
             for r in cat_resources:
@@ -193,34 +150,7 @@ class MatchingEngine:
                 r_lon = r.longitude or target_lon
                 r_dist = GeoService.haversine_distance(target_lat, target_lon, r_lat, r_lon)
 
-                r_attrs: List[AttributeProvenance] = []
-                r_evs: List[EvidenceCard] = []
-                for a in r.attributes:
-                    f_lvl = FreshnessCalculator.calculate_freshness(a.observed_at)
-                    r_attrs.append(AttributeProvenance(
-                        field_name=a.field_name,
-                        raw_value=a.raw_value,
-                        normalized_value=a.normalized_value,
-                        source_url=a.source_url,
-                        source_domain=a.source_domain,
-                        evidence_text=a.evidence_text,
-                        observed_at=a.observed_at,
-                        collector_id=a.collector_id,
-                        verification_status=a.verification_status,
-                        freshness=f_lvl
-                    ))
-                    if a.evidence_text:
-                        r_evs.append(EvidenceCard(
-                            field_name=a.field_name,
-                            claimed_value=a.normalized_value or a.raw_value,
-                            evidence_quote=a.evidence_text,
-                            source_url=a.source_url,
-                            source_domain=a.source_domain,
-                            observed_at=a.observed_at,
-                            verification_status=a.verification_status,
-                            freshness_level=f_lvl,
-                            collector_id=a.collector_id or "c_unknown"
-                        ))
+                r_attrs, r_evs = ResourceService._build_attributes_and_evidence(r)
 
                 r_is_real = any(a.collector_id in REAL_BRIGHT_DATA_COLLECTOR_IDS for a in r.attributes)
                 cat_details.append(ResourceDetail(

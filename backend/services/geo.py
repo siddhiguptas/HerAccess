@@ -133,12 +133,9 @@ class GeoService:
         ]
 
         for cat in target_categories:
-            candidates = db_session.query(Resource).filter(
-                Resource.category == cat,
-                Resource.id != origin_resource_id,
-                Resource.latitude.isnot(None),
-                Resource.longitude.isnot(None)
-            ).all()
+            from backend.repositories.resource_repository import ResourceRepository
+            repo = ResourceRepository(db_session)
+            candidates = repo.get_active_with_coordinates_by_category(cat, exclude_id=origin_resource_id)
 
             if not candidates:
                 continue
