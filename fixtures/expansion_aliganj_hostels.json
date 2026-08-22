@@ -1,0 +1,58 @@
+{
+  "collector_id": "c_expansion_aliganj_01",
+  "source_url": "https://www.sulekha.com/womens-hostel/aliganj-lucknow",
+  "category": "women_hostel",
+  "scraped_at": "2026-08-22T08:00:00Z",
+  "records": [
+    {
+      "hostel_name": "Sakshi Girls PG - Aliganj",
+      "locality": "Aliganj",
+      "city": "Lucknow",
+      "full_address": "B-12/3, Sector C, Aliganj, Lucknow, UP 226024",
+      "latitude": 26.8935,
+      "longitude": 80.9410,
+      "source_url": "https://www.sulekha.com/womens-hostel/aliganj-lucknow/sakshi-girls-pg",
+      "contact": "9876543210",
+      "attributes": {
+        "monthly_price": {"raw_value": "Rs. 7,500/month", "normalized_value": 7500, "evidence_text": "Monthly rent starting from Rs. 7,500 per month including meals"},
+        "women_only": {"raw_value": "Girls Only", "normalized_value": true, "evidence_text": "This PG is exclusively for women and female students"},
+        "curfew_time": {"raw_value": "10:00 PM", "normalized_value": "22:00", "evidence_text": "Curfew time is 10 PM for all residents"},
+        "meals_included": {"raw_value": "Veg meals included", "normalized_value": true, "evidence_text": "3 vegetarian meals per day included in rent"},
+        "furnished": {"raw_value": "Fully Furnished", "normalized_value": true, "evidence_text": "Rooms are fully furnished with bed, cupboard, study table"}
+      }
+    },
+    {
+      "hostel_name": "Prabha Women's Hostel",
+      "locality": "Aliganj",
+      "city": "Lucknow",
+      "full_address": "Near Aliganj Post Office, Aliganj, Lucknow, UP 226024",
+      "latitude": 26.8908,
+      "longitude": 80.9375,
+      "source_url": "https://www.sulekha.com/womens-hostel/aliganj-lucknow/prabha-womens",
+      "contact": "9988776655",
+      "attributes": {
+        "monthly_price": {"raw_value": "Rs 9,000/month", "normalized_value": 9000, "evidence_text": "Rent is Rs 9,000 per month for single occupancy"},
+        "women_only": {"raw_value": "Women Only PG", "normalized_value": true, "evidence_text": "Strictly women-only accommodation"},
+        "curfew_time": {"raw_value": "9:30 PM", "normalized_value": "21:30", "evidence_text": "Gate closes at 9:30 PM sharp"},
+        "meals_included": {"raw_value": "Meals available", "normalized_value": true, "evidence_text": "Both veg and non-veg meal plans available"},
+        "security": {"raw_value": "CCTV and security guard", "normalized_value": true, "evidence_text": "24x7 CCTV surveillance and night security guard"}
+      }
+    },
+    {
+      "hostel_name": "Nidhi Safe Stay for Women",
+      "locality": "Aliganj",
+      "city": "Lucknow",
+      "full_address": "Kapoorthala Complex, Aliganj, Lucknow, UP 226024",
+      "latitude": 26.8890,
+      "longitude": 80.9425,
+      "source_url": "https://www.sulekha.com/womens-hostel/aliganj-lucknow/nidhi-safe-stay",
+      "contact": "8877665544",
+      "attributes": {
+        "monthly_price": {"raw_value": "Rs 6,500 per month", "normalized_value": 6500, "evidence_text": "Starting from Rs 6,500/month for shared rooms"},
+        "women_only": {"raw_value": "Girls PG", "normalized_value": true, "evidence_text": "Girls-only paying guest accommodation"},
+        "curfew_time": {"raw_value": "10:30 PM", "normalized_value": "22:30", "evidence_text": "Curfew is 10:30 PM, gate locked after"},
+        "wifi": {"raw_value": "Free WiFi", "normalized_value": true, "evidence_text": "Free high-speed WiFi for all residents"}
+      }
+    }
+  ]
+}
